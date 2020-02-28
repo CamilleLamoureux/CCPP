@@ -26,24 +26,28 @@ class Voiture {
     int usure_frein;                // De 0 à 10
     int usure_cremaillere;          // De 0 à 10
 
-    // Méthodes
-    void UtilisationEssence(essence) {
+    // METHODE
+    void ChangementEssence(int essence) {
         essence = essence - 5;
     }
 
-    void ChangementTempMoteur(temperature_moteur) {
+    void ChangementTempMoteur(int temperature_moteur) {
         temperature_moteur = temperature_moteur + 10;
     }
 
-    void ChangementPneus(pression_pneus_avant,pression_pneus_arriere,usure_pneus_arriere,usure_pneus_avant) {
+    void ChangementPneus(int pression_pneus_avant, int pression_pneus_arriere, int usure_pneus_arriere, int usure_pneus_avant) {
         pression_pneus_avant = pression_pneus_avant - 0.2;
         pression_pneus_arriere = pression_pneus_arriere - 0.2;
 
         usure_pneus_avant = usure_pneus_avant + 1;
         usure_pneus_arriere = usure_pneus_arriere + 1;
     }
-};
 
+    void ChangementUsureVoiture(int usure_frein, int usure_cremaillere) {
+        usure_frein = usure_frein +1;
+        usure_cremaillere = usure_cremaillere +1;
+    }
+};
 
 int main() {
     return 0;
