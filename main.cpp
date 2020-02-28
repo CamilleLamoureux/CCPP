@@ -30,6 +30,9 @@ public:
     string backGreen2 = "\033[0m";
     string backYellow1 = "\033[1;43m";
     string backYellow2 = "\033[0m";
+    string backBlack = "\033[1;40m";
+
+    string close = "\033[0m";
 };
 
 void consoleClear() {
@@ -43,7 +46,7 @@ void finDuJeu(bool alive1, bool alive2, int nombreTours){
     else {cout<< "Vous avez perdu... Vous avez tenu " << nombreTours << " tours ! Vous pouvez toujours retenter votre chance !"<<endl;};
 }
 
-void display(string type, int n) {
+void displayStats(string type, int n) {
     Colors colors;
     string color1; string color2;
 
@@ -64,6 +67,11 @@ void display(string type, int n) {
     cout << colors.backWhite1 << string(100-n, ' ') << colors.backWhite2 <<endl;
 };
 
+void displayProgression(int n){
+    Colors colors;
+    cout<< colors.green1 << string(n, ' ') << colors.close;
+    cout<< colors.backWhite1 << string(50-n, ' ') << colors.close <<endl;
+};
 
 class Voiture {
 public:
@@ -116,7 +124,7 @@ public:
     void update() {
         essence -= 3;
 
-        temperatureMoteur += 5;
+        temperatureMoteur += 10;
         huileMoteur -= 2;
 
         pressionPneusAvant -= 2;
@@ -135,18 +143,28 @@ public:
 
         cout<< colors.blue1 << "\n *** Statistiques de " << nomVoiture << " : ***" << colors.blue2 <<endl;
         cout<< colors.black1 << "    Type : " << typeVoiture << colors.black2 <<endl;
-        cout<< "    Carburant :          "; display("d",essence);
-        cout<< "\n    Pneus : ";
-        cout<< "\n      - Avant : \n         - Usure :      "; display("c", usurePneusAvant);
-        cout<< "\n         - Pression :    "; display("d", pressionPneusAvant);
-        cout<< "\n      - Arrière : \n         - Usure :      "; display("c", usurePneusArriere);
-        cout<< "\n         - Pression :    "; display("d", pressionPneusArriere);
-        cout<< "\n    Moteur : ";
-        cout<< "\n      - Niveau d'huile : "; display("d",huileMoteur);
-        cout<< "\n      - Temperature :    "; display("c",temperatureMoteur);
-        cout<< "\n    Freins :             "; display("c",usureFreins);
-        cout<< "\n    Cremaillère :        "; display("c",usureCremaillere);
-        cout<< "\n    Boite de Vitesses :  "; display("c",usureBoiteVitesse);
+        cout<< "    Carburant :          ";
+        displayStats("d", essence);
+        cout<< "\n    Pneus avant: ";
+        cout<< "\n         - Usure :       ";
+        displayStats("c", usurePneusAvant);
+        cout<< "\n         - Pression :    ";
+        displayStats("d", pressionPneusAvant);
+        cout<< "\n    Pneus arrière : ";
+        cout<< "\n         - Usure :       ";
+        displayStats("c", usurePneusArriere);
+        cout<< "\n         - Pression :    ";
+        displayStats("d", pressionPneusArriere);
+        cout<< "\n    Temperature moteur : ";
+        displayStats("c", temperatureMoteur);
+        cout<< "\n    Niveau d'huile :     ";
+        displayStats("d", huileMoteur);
+        cout<< "\n    Freins :             ";
+        displayStats("c", usureFreins);
+        cout<< "\n    Cremaillère :        ";
+        displayStats("c", usureCremaillere);
+        cout<< "\n    Boite de Vitesses :  ";
+        displayStats("c", usureBoiteVitesse);
     }
 
     void ajustement(){
@@ -154,7 +172,7 @@ public:
         int aChanger;
 
         cout<< colors.yellow1 << "\n == AJUSTEMENT DE " << nomVoiture << " ==" << colors.yellow2 <<endl;
-        cout<< "0. Exit \n 1. Remettre de l'essence \n 2. Remettre de l'huile dans le moteur \n 3. Regonfler les pneus avants \n 4. Regonfler les pneus arrières \n 5. Changer les freins \n 6. Changer les pneus avants \n 7. Changer les pneus arrières \n 8. Faire refroidir le moteur \n 9. Renover la crémaillère \n 10. Renover la boite de vitesses"<<endl;
+        cout<< "0. Exit \n 1. Faire le plein d'essence \n 2. Remettre de l'huile dans le moteur \n 3. Regonfler les pneus avants (+20%)\n 4. Regonfler les pneus arrières (+20%) \n 5. Changer les freins \n 6. Changer les pneus avants \n 7. Changer les pneus arrières \n 8. Faire refroidir le moteur \n 9. Renover la crémaillère (-25%) \n 10. Renover la boite de vitesses (-25%)"<<endl;
         cin>> aChanger;
 
         consoleClear();
@@ -163,44 +181,44 @@ public:
             case 0 :
                 break;
             case 1 :
-                essence = 15;
+                essence = 100;
                 cout<< colors.green1 << "Vous avez fait le plein !" << colors.green2 <<endl;
                 break;
             case 2 :
-                huileMoteur = 10;
+                huileMoteur = 100;
                 cout<< colors.green1 << "Votre niveau d'huile moteur est parfait !" << colors.green2 <<endl;
                 break;
             case 3 :
-                pressionPneusAvant += 1;
-                cout<< colors.green1 << "La pression de vos pneus avant est maintenant de " << pressionPneusAvant << "bar." << colors.green2 <<endl;
+                pressionPneusAvant += 20;
+                cout<< colors.green1 << "La pression de vos pneus avant est maintenant de " << pressionPneusAvant << "%." << colors.green2 <<endl;
                 break;
             case 4 :
-                pressionPneusArriere += 1;
-                cout<< colors.green1 << "La pression de vos pneus arrière est maintenant de " << pressionPneusArriere << "bar." << colors.green2 <<endl;
+                pressionPneusArriere += 20;
+                cout<< colors.green1 << "La pression de vos pneus arrière est maintenant de " << pressionPneusArriere << "%." << colors.green2 <<endl;
                 break;
             case 5 :
-                usureFreins = 0;
+                usureFreins = 5;
                 cout<< colors.green1 << "Vos freins sont comme neufs !" << colors.green2 <<endl;
                 break;
             case 6 :
-                usurePneusAvant = 0;
+                usurePneusAvant = 5;
                 cout << colors.green1 << "Vos pneus avant sont neufs !" << colors.green2 <<endl;
                 break;
             case 7 :
-                usurePneusArriere = 0;
+                usurePneusArriere = 5;
                 cout << colors.green1 << "Vos pneus arrières sont neufs !";
                 break;
             case 8 :
-                temperatureMoteur -= 5;
-                cout<< colors.green1 << "La température du moteur est de " << temperatureMoteur << "°C." << colors.green2 << endl;
+                temperatureMoteur -= 50;
+                cout<< colors.green1 << "La température du moteur est de " << temperatureMoteur << "%." << colors.green2 << endl;
                 break;
             case 9 :
-                usureCremaillere -= 0.5;
-                cout<< colors.green1 << "Votre crémaillère est usée à " << usureCremaillere << "/10." << colors.green2 <<endl;
+                usureCremaillere -= 25;
+                cout<< colors.green1 << "Votre crémaillère est usée à " << usureCremaillere << "%." << colors.green2 <<endl;
                 break;
             case 10 :
-                usureBoiteVitesse -= 0.5;
-                cout<< colors.green1 << "Votre boite de vitesses est usée à " << usureBoiteVitesse << "/10." << colors.green2 <<endl;
+                usureBoiteVitesse -= 25;
+                cout<< colors.green1 << "Votre boite de vitesses est usée à " << usureBoiteVitesse << "%." << colors.green2 <<endl;
                 break;
         }
     };
