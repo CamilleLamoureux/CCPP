@@ -45,21 +45,6 @@ public:
                 Voiture::quatreRouesMotrices =1;
                 break;
         }
-
-        cout << "\n VOITURE CREE" << endl;
-        cout << "Détails de " << nomVoiture << " : " << endl;
-        cout << "    - " << boiteVitesses << " vitesses" << endl;
-        switch (type) {
-            case 1 :
-                cout << "    - Propulsion" << endl;
-                break;
-            case 2 :
-                cout << "    - Traction" << endl;
-                break;
-            case 3 :
-                cout << "    - Quatre roues motrices" << endl;
-                break;
-        }
     }
 
     void update() {
@@ -80,16 +65,16 @@ public:
     }
 
     void affichageStat(){
-        cout<< "Statistiques de " << nomVoiture << " : " <<endl;
-        cout<< "Carburant : " << essence << " L (maximum de 15L)" <<endl;
-        cout<< "Pneus : " <<endl;
-        cout<< "    - Avant : \n      - Usure : " << usurePneusAvant << "/10" << "\n      - Pression : " << pressionPneusAvant << " bar" <<endl;
-        cout<< "    - Arrière : \n      - Usure : " << usurePneusArriere << "/10" << "\n      - Pression : " << pressionPneusArriere << " bar" <<endl;
-        cout<< "Moteur : " <<endl;
-        cout<< "    - Niveau d'huile : " << huileMoteur << "/5" << "\n    - Temperature : " << temperatureMoteur << "°C" <<endl;
-        cout<< "Freins : " << usureFreins << "/10" <<endl;
-        cout<< "Cremaillère : " << usureCremaillere << "/10" <<endl;
-        cout<< "Boite de Vitesses : " << usureBoiteVitesse << "/10" <<endl;
+        cout<< "\n *** Statistiques de " << nomVoiture << " : ***" <<endl;
+        cout<< "    Carburant : " << essence << " L (maximum de 15L)" <<endl;
+        cout<< "    Pneus : " <<endl;
+        cout<< "      - Avant : \n        - Usure : " << usurePneusAvant << "/10" << "\n        - Pression : " << pressionPneusAvant << " bar" <<endl;
+        cout<< "      - Arrière : \n        - Usure : " << usurePneusArriere << "/10" << "\n        - Pression : " << pressionPneusArriere << " bar" <<endl;
+        cout<< "    Moteur : " <<endl;
+        cout<< "      - Niveau d'huile : " << huileMoteur << "/5" << "\n      - Temperature : " << temperatureMoteur << "°C" <<endl;
+        cout<< "    Freins : " << usureFreins << "/10" <<endl;
+        cout<< "    Cremaillère : " << usureCremaillere << "/10" <<endl;
+        cout<< "    Boite de Vitesses : " << usureBoiteVitesse << "/10" <<endl;
     }
 
     void maintenance(){
@@ -159,6 +144,18 @@ public:
     };
 };
 
+void consoleClear() {
+    cout << string( 100, '\n' );
+}
+
+void finDuJeu(bool alive1, bool alive2){
+    consoleClear();
+    cout<< "== END OF GAME ==" <<endl;
+    if(alive1 == 1 && alive2 == 1) {cout<< "Votre victoire est totale ! Vous avez réussit à maintenair vos deux voitures pendant 50 tours !"<<endl;}
+    else if(alive1 == 1 || alive2 == 1) {cout<< "Votre victoire est partielle ! Vous avez réussit à maintenair vos une voiture sur les deux pendant 50 tours !"<<endl;}
+    else {cout<< "Vous avez perdu... Vous pouvez toujours retenter votre chance !"<<endl;};
+}
+
 int main() {
     // VARIABLES
     string nom_voiture_1;
@@ -196,6 +193,7 @@ int main() {
     // DEBUT DES TOURS
     while (voiture1.alive == 1 || voiture2.alive ==1 ){
         for (int i = 1; i <= 50 ; i++) {
+            consoleClear();
             cout<< "== TOUR "<< i << " ==" <<endl;
 
             // Changement des différents éléments de la voiture suite au premier tour et affichage des stats
@@ -206,17 +204,21 @@ int main() {
             cout<< "Souhaitez-vous effectuer une maintenance sur une voiture ? [O/N]" <<endl;
             cin>> maintenance;
             if(maintenance == "O" || maintenance == "o" || maintenance == "0"){
+                consoleClear();
                 cout<< "ATTENTION : Vous ne pouvez effectuer qu'une action par tour, et sur une seule voiture ! Choisissez sagement ;-)" <<endl;
-                cout<< "Sur quelle voiture ? \n" <<endl;
-                if(voiture1.alive == 1){ cout<< "1." << voiture1.nomVoiture <<endl;};
-                if(voiture2.alive == 1){ cout<< "2." << voiture2.nomVoiture <<endl;};
+                cout<< "Sur quelle voiture ?" <<endl;
+                cout<< "0. Exit" <<endl;
+                if(voiture1.alive == 1){ cout<< "1. " << voiture1.nomVoiture <<endl;};
+                if(voiture2.alive == 1){ cout<< "2. " << voiture2.nomVoiture <<endl;};
                 cin>> voitureMaintenance;
 
                 if(voitureMaintenance == 1) { voiture1.maintenance();}
                 else if(voitureMaintenance == 2) { voiture2.maintenance();}
-                else { break;};
+                else { continue;};
             }
         }
+        finDuJeu(voiture1.alive, voiture2.alive);
     }
+    finDuJeu(voiture1.alive, voiture2.alive);
     return 0;
 }
