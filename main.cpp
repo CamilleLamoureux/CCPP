@@ -3,6 +3,26 @@
 
 using namespace std;
 
+class Colors {
+public:
+    string black1 = "\033[1;30m";
+    string black2 = "\033[0m";
+    string red1 = "\033[1;31m";
+    string red2 = "\033[0m";
+    string green1 = "\033[1;32m";
+    string green2 = "\033[0m";
+    string yellow1 = "\033[1;33m";
+    string yellow2 = "\033[0m";
+    string blue1 = "\033[1;34m";
+    string blue2 = "\033[0m";
+    string magenta1 = "\033[1;35m";
+    string magenta2 = "\033[0m";
+    string cyan1 = "\033[1;36m";
+    string cyan2 = "\033[0m";
+    string white1 = "\033[1;37m";
+    string white2 = "\033[0m";
+};
+
 class Voiture {
 public:
     // ATTRIBUTS
@@ -65,7 +85,9 @@ public:
     }
 
     void affichageStat(){
-        cout<< "\n *** Statistiques de " << nomVoiture << " : ***" <<endl;
+        Colors colors;
+
+        cout<< colors.blue1 << "\n *** Statistiques de " << nomVoiture << " : ***" << colors.blue2 <<endl;
         cout<< "    Carburant : " << essence << " L (maximum de 15L)" <<endl;
         cout<< "    Pneus : " <<endl;
         cout<< "      - Avant : \n        - Usure : " << usurePneusAvant << "/10" << "\n        - Pression : " << pressionPneusAvant << " bar" <<endl;
@@ -78,9 +100,10 @@ public:
     }
 
     void ajustement(){
+        Colors colors;
         int aChanger;
 
-        cout<< "== AJUSTEMENT DE " << nomVoiture << " ==" <<endl;
+        cout<< colors.yellow1 << "== AJUSTEMENT DE " << nomVoiture << " ==" << colors.yellow2 <<endl;
         cout<< "0. Exit \n 1. Remettre de l'essence \n 2. Remettre de l'huile dans le moteur \n 3. Regonfler les pneus avants \n 4. Regonfler les pneus arrières \n 5. Changer les freins \n 6. Changer les pneus avants \n 7. Changer les pneus arrières \n 8. Faire refroidir le moteur \n 9. Renover la crémaillère \n 10. Renover la boite de vitesses"<<endl;
         cin>> aChanger;
 
@@ -89,58 +112,60 @@ public:
                 break;
             case 1 :
                 essence = 15;
-                cout<< "Vous avez refait le plein !" <<endl;
+                cout<< colors.green1 << "Vous avez refait le plein !" << colors.green2 <<endl;
                 break;
             case 2 :
                 huileMoteur = 5;
-                cout<< "Votre niveau d'huile moteur est parfait !"<<endl;
+                cout<< colors.green1 << "Votre niveau d'huile moteur est parfait !" << colors.green2 <<endl;
                 break;
             case 3 :
                 pressionPneusAvant += 1;
-                cout<< "La pression de vos pneus avant est maintenant de " << pressionPneusAvant << "bar." <<endl;
+                cout<< colors.green1 << "La pression de vos pneus avant est maintenant de " << pressionPneusAvant << "bar." << colors.green2 <<endl;
                 break;
             case 4 :
                 pressionPneusArriere += 1;
-                cout<< "La pression de vos pneus arrière est maintenant de " << pressionPneusArriere << "bar." <<endl;
+                cout<< colors.green1 << "La pression de vos pneus arrière est maintenant de " << pressionPneusArriere << "bar." << colors.green2 <<endl;
                 break;
             case 5 :
                 usureFreins = 0;
-                cout<< "Vos freins sont comme neufs !" <<endl;
+                cout<< colors.green1 << "Vos freins sont comme neufs !" << colors.green2 <<endl;
                 break;
             case 6 :
                 usurePneusAvant = 0;
-                cout << "Vos pneus avant sont neufs !";
+                cout << colors.green1 << "Vos pneus avant sont neufs !" << colors.green2 <<endl;
                 break;
             case 7 :
                 usurePneusArriere = 0;
-                cout << "Vos pneus arrières sont neufs !";
+                cout << colors.green1 << "Vos pneus arrières sont neufs !";
                 break;
             case 8 :
                 temperatureMoteur -= 5;
-                cout<< "La température du moteur est de " << temperatureMoteur << "°C.";
+                cout<< colors.green1 << "La température du moteur est de " << temperatureMoteur << "°C." << colors.green2 << endl;
                 break;
             case 9 :
                 usureCremaillere -= 0.5;
-                cout<< "Votre crémaillère est usée à " << usureCremaillere << "/10."<<endl;
+                cout<< colors.green1 << "Votre crémaillère est usée à " << usureCremaillere << "/10." << colors.green2 <<endl;
                 break;
             case 10 :
                 usureBoiteVitesse -= 0.5;
-                cout<< "Votre boite de vitesses est usée à " << usureBoiteVitesse << "/10."<<endl;
+                cout<< colors.green1 << "Votre boite de vitesses est usée à " << usureBoiteVitesse << "/10." << colors.green2 <<endl;
                 break;
         }
     };
 
     void verifications(){
-        if (essence <= 0) { cout<< " C'est la panne sèche pour " << nomVoiture << " ! Elle quitte la course..." <<endl; alive = 0;}
-        if (huileMoteur <= 0) { cout<< " Le moteur a cassé sur " << nomVoiture << " ! Elle quitte la course..." <<endl; alive = 0;}
-        if (temperatureMoteur >= 120) { cout<< " Surchauffe du moteur pour " << nomVoiture << " ! Elle quitte la course..." <<endl; alive = 0;}
-        if (usureBoiteVitesse >= 10) { cout<< " La boite de vitesse de" << nomVoiture << "  est morte ! Elle quitte la course..." <<endl; alive = 0;}
-        if (usureCremaillere >= 10) { cout<< " La cremaillère de " << nomVoiture << "  est trop usée ! Elle quitte la course..." <<endl; alive = 0;}
-        if (usureFreins >= 10) { cout<< " Les freins de " << nomVoiture << "  sont HS ! Elle quitte la course..." <<endl; alive = 0;}
-        if (pressionPneusArriere >= 10 && propulsion == 1) { cout<< "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus arrière sont à plat ! C'est une propulsion ! Elle quitte la course..." <<endl; alive = 0;}
-        if (pressionPneusAvant >= 10 && traction == 1) { cout<< "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus avant sont à plat ! C'est une traction ! Elle quitte la course..." <<endl; alive = 0;}
-        if (pressionPneusAvant >= 10 && pressionPneusArriere >= 10) { cout<< "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus sont tous à plat ! Elle quitte la course..." <<endl; alive = 0;}
-        if (usurePneusAvant >= 10 && usurePneusArriere >= 10) { cout<< "Les pneus de " << nomVoiture << " sont tous trop usés ! Elle quitte la course..." <<endl; alive = 0;}
+        Colors colors;
+
+        if (essence <= 0) { cout<< colors.red1 << "C'est la panne sèche pour " << nomVoiture << " ! Elle quitte la course..." << colors.red2 <<endl; alive = 0;}
+        if (huileMoteur <= 0) { cout<< colors.red1 <<"Le moteur a cassé sur " << nomVoiture << " ! Elle quitte la course..." << colors.red2 <<endl; alive = 0;}
+        if (temperatureMoteur >= 120) { cout<< colors.red1 << "Surchauffe du moteur pour " << nomVoiture << " ! Elle quitte la course..." << colors.red2 <<endl; alive = 0;}
+        if (usureBoiteVitesse >= 10) { cout<< colors.red1 << "La boite de vitesse de" << nomVoiture << "  est morte ! Elle quitte la course..." << colors.red2 <<endl; alive = 0;}
+        if (usureCremaillere >= 10) { cout<< colors.red1 << "La cremaillère de " << nomVoiture << "  est trop usée ! Elle quitte la course..." << colors.red2 <<endl; alive = 0;}
+        if (usureFreins >= 10) { cout<< colors.red1 <<"Les freins de " << nomVoiture << "  sont HS ! Elle quitte la course..." << colors.red2 <<endl; alive = 0;}
+        if (pressionPneusArriere >= 10 && propulsion == 1) { cout<< colors.red1 << "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus arrière sont à plat ! C'est une propulsion ! Elle quitte la course..." << colors.red2 <<endl; alive = 0;}
+        if (pressionPneusAvant >= 10 && traction == 1) { cout<< colors.red1 <<"Compliqué pour " << nomVoiture << " de rouler alors que ses pneus avant sont à plat ! C'est une traction ! Elle quitte la course..." << colors.red2 <<endl; alive = 0;}
+        if (pressionPneusAvant >= 10 && pressionPneusArriere >= 10) { cout<< colors.red1 <<"Compliqué pour " << nomVoiture << " de rouler alors que ses pneus sont tous à plat ! Elle quitte la course..." << colors.red2 <<endl; alive = 0;}
+        if (usurePneusAvant >= 10 && usurePneusArriere >= 10) { cout<< colors.red1 <<"Les pneus de " << nomVoiture << " sont tous trop usés ! Elle quitte la course..." << colors.red2 <<endl; alive = 0;}
     };
 };
 
@@ -148,9 +173,9 @@ void consoleClear() {
     cout << string( 100, '\n' );
 }
 
+
 void finDuJeu(bool alive1, bool alive2, int nombreTours){
     consoleClear();
-    cout<< "== END OF GAME ==" <<endl;
     if(alive1 == 1 && alive2 == 1) {cout<< "Votre victoire est totale ! Vous avez réussit à maintenair vos deux voitures pendant 50 tours !"<<endl;}
     else if(alive1 == 1 || alive2 == 1) {cout<< "Votre victoire est partielle ! Vous avez réussit à maintenair vos une voiture sur les deux pendant 50 tours !"<<endl;}
     else {cout<< "Vous avez perdu... Vous avez tenu " << nombreTours << " tours ! Vous pouvez toujours retenter votre chance !"<<endl;};
@@ -170,8 +195,11 @@ int main() {
 
     int nombreTours = 50;
 
+    Colors colors;
+
     // CREATION DES VOITURES
-    cout<<"== PREMIERE VOITURE =="<<endl;
+    cout<< colors.yellow1 << "== CREATION DES VOITURES ==" << colors.yellow2 <<endl;
+    cout<< colors.blue1 << "*** PREMIERE VOITURE ***" << colors.blue2 <<endl;
     cout<< "Choisissez le nom de la voiture : " <<endl;
     cin>> nom_voiture_1;
     cout<< "Choisissez le nombre de vitesse : " <<endl;
@@ -179,7 +207,7 @@ int main() {
     cout<< "Types : \n 1. Propulsion \n 2. Traction \n 3. Quatre roues motrices \n Choisissez le type de la voiture : " <<endl;
     cin>> type_1;
 
-    cout<<"== DEUXIEME VOITURE =="<<endl;
+    cout<< colors.blue1 << "*** DEUXIEME VOITURE ***" << colors.blue2 <<endl;
     cout<< "Choisissez le nom de la voiture : " <<endl;
     cin>> nom_voiture_2;
     cout<< "Choisissez le nombre de vitesse : " <<endl;
@@ -196,18 +224,18 @@ int main() {
 
     for (int i = 1; i <= 10 ; i++) {
         consoleClear();
-        cout<< "== TOUR "<< i << " ==" <<endl;
+        cout<< colors.cyan1 << "== TOUR "<< i << " ==" << colors.cyan2 <<endl;
 
         // Changement des différents éléments de la voiture suite au premier tour et affichage des stats
         if (voiture1.alive == 1){voiture1.update(); voiture1.affichageStat(); voiture1.verifications();}
         if (voiture2.alive == 1){voiture2.update(); voiture2.affichageStat(); voiture2.verifications();}
 
         // Changement d'informations par l'utilisateur
-        cout<< "Souhaitez-vous effectuer un ajustement sur une voiture ? [O/N]" <<endl;
+        cout<< colors.magenta1 <<"Souhaitez-vous effectuer un ajustement sur une voiture ? [O/N]" << colors.magenta2 <<endl;
         cin >> ajustement;
         if(ajustement == "O" || ajustement == "o" || ajustement == "0"){
             consoleClear();
-            cout<< "ATTENTION : Vous ne pouvez effectuer qu'une action par tour, et sur une seule voiture ! Choisissez sagement ;-)" <<endl;
+            cout<< colors.red1 << "ATTENTION : Vous ne pouvez effectuer qu'une action par tour, et sur une seule voiture ! Choisissez sagement ;-)" << colors.red2 <<endl;
             cout<< "Sur quelle voiture ?" <<endl;
             cout<< "0. Exit" <<endl;
             if(voiture1.alive == 1){ cout<< "1. " << voiture1.nomVoiture <<endl;};
@@ -222,6 +250,7 @@ int main() {
         if(voiture1.alive == 0 && voiture2.alive == 0) {nombreTours = i; break;}
 
     }
+    cout<< colors.yellow1 << "== END OF GAME ==" <<colors.yellow2 <<endl;
     finDuJeu(voiture1.alive, voiture2.alive, nombreTours);
 
     return 0;
