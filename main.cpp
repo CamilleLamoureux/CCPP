@@ -168,7 +168,7 @@ int main() {
     string ajustement;
     int ajustementAFaire;
 
-    int nombreTours;
+    int nombreTours = 50;
 
     // CREATION DES VOITURES
     cout<<"== PREMIERE VOITURE =="<<endl;
@@ -220,6 +220,7 @@ int main() {
         }
         // Vérification qu'on a pas perdu
         if(voiture1.alive == 0 && voiture2.alive == 0) {nombreTours = i; break;}
+
     }
     finDuJeu(voiture1.alive, voiture2.alive, nombreTours);
 
