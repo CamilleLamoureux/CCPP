@@ -77,10 +77,10 @@ public:
         cout<< "    Boite de Vitesses : " << usureBoiteVitesse << "/10" <<endl;
     }
 
-    void maintenance(){
+    void ajustement(){
         int aChanger;
 
-        cout<< "== MAINTENANCE DE " << nomVoiture << " ==" <<endl;
+        cout<< "== AJUSTEMENT DE " << nomVoiture << " ==" <<endl;
         cout<< "0. Exit \n 1. Remettre de l'essence \n 2. Remettre de l'huile dans le moteur \n 3. Regonfler les pneus avants \n 4. Regonfler les pneus arrières \n 5. Changer les freins \n 6. Changer les pneus avants \n 7. Changer les pneus arrières \n 8. Faire refroidir le moteur \n 9. Renover la crémaillère \n 10. Renover la boite de vitesses"<<endl;
         cin>> aChanger;
 
@@ -148,12 +148,12 @@ void consoleClear() {
     cout << string( 100, '\n' );
 }
 
-void finDuJeu(bool alive1, bool alive2){
+void finDuJeu(bool alive1, bool alive2, int nombreTours){
     consoleClear();
     cout<< "== END OF GAME ==" <<endl;
     if(alive1 == 1 && alive2 == 1) {cout<< "Votre victoire est totale ! Vous avez réussit à maintenair vos deux voitures pendant 50 tours !"<<endl;}
     else if(alive1 == 1 || alive2 == 1) {cout<< "Votre victoire est partielle ! Vous avez réussit à maintenair vos une voiture sur les deux pendant 50 tours !"<<endl;}
-    else {cout<< "Vous avez perdu... Vous pouvez toujours retenter votre chance !"<<endl;};
+    else {cout<< "Vous avez perdu... Vous avez tenu " << nombreTours << " tours ! Vous pouvez toujours retenter votre chance !"<<endl;};
 }
 
 int main() {
@@ -165,8 +165,10 @@ int main() {
     int type_1;
     int type_2;
 
-    string maintenance;
-    int voitureMaintenance;
+    string ajustement;
+    int ajustementAFaire;
+
+    int nombreTours;
 
     // CREATION DES VOITURES
     cout<<"== PREMIERE VOITURE =="<<endl;
@@ -191,34 +193,35 @@ int main() {
     voiture2.creationVoiture(nom_voiture_2, nombre_vitesses_2, type_2);
 
     // DEBUT DES TOURS
-    while (voiture1.alive == 1 || voiture2.alive ==1 ){
-        for (int i = 1; i <= 50 ; i++) {
+
+    for (int i = 1; i <= 10 ; i++) {
+        consoleClear();
+        cout<< "== TOUR "<< i << " ==" <<endl;
+
+        // Changement des différents éléments de la voiture suite au premier tour et affichage des stats
+        if (voiture1.alive == 1){voiture1.update(); voiture1.affichageStat(); voiture1.verifications();}
+        if (voiture2.alive == 1){voiture2.update(); voiture2.affichageStat(); voiture2.verifications();}
+
+        // Changement d'informations par l'utilisateur
+        cout<< "Souhaitez-vous effectuer un ajustement sur une voiture ? [O/N]" <<endl;
+        cin >> ajustement;
+        if(ajustement == "O" || ajustement == "o" || ajustement == "0"){
             consoleClear();
-            cout<< "== TOUR "<< i << " ==" <<endl;
+            cout<< "ATTENTION : Vous ne pouvez effectuer qu'une action par tour, et sur une seule voiture ! Choisissez sagement ;-)" <<endl;
+            cout<< "Sur quelle voiture ?" <<endl;
+            cout<< "0. Exit" <<endl;
+            if(voiture1.alive == 1){ cout<< "1. " << voiture1.nomVoiture <<endl;};
+            if(voiture2.alive == 1){ cout<< "2. " << voiture2.nomVoiture <<endl;};
+            cin >> ajustementAFaire;
 
-            // Changement des différents éléments de la voiture suite au premier tour et affichage des stats
-            if (voiture1.alive == 1){voiture1.update(); voiture1.affichageStat(); voiture1.verifications();}
-            if (voiture2.alive == 1){voiture2.update(); voiture2.affichageStat(); voiture2.verifications();}
-
-            // Changement d'informations par l'utilisateur
-            cout<< "Souhaitez-vous effectuer une maintenance sur une voiture ? [O/N]" <<endl;
-            cin>> maintenance;
-            if(maintenance == "O" || maintenance == "o" || maintenance == "0"){
-                consoleClear();
-                cout<< "ATTENTION : Vous ne pouvez effectuer qu'une action par tour, et sur une seule voiture ! Choisissez sagement ;-)" <<endl;
-                cout<< "Sur quelle voiture ?" <<endl;
-                cout<< "0. Exit" <<endl;
-                if(voiture1.alive == 1){ cout<< "1. " << voiture1.nomVoiture <<endl;};
-                if(voiture2.alive == 1){ cout<< "2. " << voiture2.nomVoiture <<endl;};
-                cin>> voitureMaintenance;
-
-                if(voitureMaintenance == 1) { voiture1.maintenance();}
-                else if(voitureMaintenance == 2) { voiture2.maintenance();}
-                else { continue;};
-            }
+            if(ajustementAFaire == 1) { voiture1.ajustement();}
+            else if(ajustementAFaire == 2) { voiture2.ajustement();}
+            else { continue;};
         }
-        finDuJeu(voiture1.alive, voiture2.alive);
+        // Vérification qu'on a pas perdu
+        if(voiture1.alive == 0 && voiture2.alive == 0) {nombreTours = i; break;}
     }
-    finDuJeu(voiture1.alive, voiture2.alive);
+    finDuJeu(voiture1.alive, voiture2.alive, nombreTours);
+
     return 0;
 }
