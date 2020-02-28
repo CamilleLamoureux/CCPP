@@ -17,6 +17,7 @@ public:
     int boiteVitesses;
 
     // Will change during a turn
+    bool alive = 1;
     int temperatureMoteur = 2;          // En °C
     int essence = 15;                   // En litres
     float pressionPneusAvant = 2;       // En bar
@@ -62,7 +63,7 @@ public:
     }
 
     void update() {
-        essence -= 5;
+        essence -= 3;
 
         temperatureMoteur += 10;
         huileMoteur -= 0.10;
@@ -94,7 +95,7 @@ public:
     void maintenance(){
         int aChanger;
 
-        cout<< "== MAINTENANCE ==" <<endl;
+        cout<< "== MAINTENANCE DE " << nomVoiture << " ==" <<endl;
         cout<< "0. Exit \n 1. Remettre de l'essence \n 2. Remettre de l'huile dans le moteur \n 3. Regonfler les pneus avants \n 4. Regonfler les pneus arrières \n 5. Changer les freins \n 6. Changer les pneus avants \n 7. Changer les pneus arrières \n 8. Faire refroidir le moteur \n 9. Renover la crémaillère \n 10. Renover la boite de vitesses"<<endl;
         cin>> aChanger;
 
@@ -143,6 +144,19 @@ public:
                 break;
         }
     };
+
+    void verifications(){
+        if (essence <= 0) { cout<< " C'est la panne sèche pour " << nomVoiture << " ! Elle quitte la course..." <<endl; alive = 0;}
+        if (huileMoteur <= 0) { cout<< " Le moteur a cassé sur " << nomVoiture << " ! Elle quitte la course..." <<endl; alive = 0;}
+        if (temperatureMoteur >= 120) { cout<< " Surchauffe du moteur pour " << nomVoiture << " ! Elle quitte la course..." <<endl; alive = 0;}
+        if (usureBoiteVitesse >= 10) { cout<< " La boite de vitesse de" << nomVoiture << "  est morte ! Elle quitte la course..." <<endl; alive = 0;}
+        if (usureCremaillere >= 10) { cout<< " La cremaillère de " << nomVoiture << "  est trop usée ! Elle quitte la course..." <<endl; alive = 0;}
+        if (usureFreins >= 10) { cout<< " Les freins de " << nomVoiture << "  sont HS ! Elle quitte la course..." <<endl; alive = 0;}
+        if (pressionPneusArriere >= 10 && propulsion == 1) { cout<< "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus arrière sont à plat ! C'est une propulsion ! Elle quitte la course..." <<endl; alive = 0;}
+        if (pressionPneusAvant >= 10 && traction == 1) { cout<< "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus avant sont à plat ! C'est une traction ! Elle quitte la course..." <<endl; alive = 0;}
+        if (pressionPneusAvant >= 10 && pressionPneusArriere >= 10) { cout<< "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus sont tous à plat ! Elle quitte la course..." <<endl; alive = 0;}
+        if (usurePneusAvant >= 10 && usurePneusArriere >= 10) { cout<< "Les pneus de " << nomVoiture << " sont tous trop usés ! Elle quitte la course..." <<endl; alive = 0;}
+    };
 };
 
 int main() {
@@ -180,28 +194,28 @@ int main() {
     voiture2.creationVoiture(nom_voiture_2, nombre_vitesses_2, type_2);
 
     // DEBUT DES TOURS
-    for (int i = 1; i <= 50 ; i++)
-    {
-        cout<< "== TOUR "<< i << " ==" <<endl;
-        // Changement des différents éléments de la voiture suite au premier tour
-        voiture1.update();
-        voiture2.update();
+    while (voiture1.alive == 1 || voiture2.alive ==1 ){
+        for (int i = 1; i <= 50 ; i++) {
+            cout<< "== TOUR "<< i << " ==" <<endl;
 
-        // Affichage des nouvelles informations sur les voitures
-        voiture1.affichageStat();
-        voiture2.affichageStat();
+            // Changement des différents éléments de la voiture suite au premier tour et affichage des stats
+            if (voiture1.alive == 1){voiture1.update(); voiture1.affichageStat(); voiture1.verifications();}
+            if (voiture2.alive == 1){voiture2.update(); voiture2.affichageStat(); voiture2.verifications();}
 
-        // Changement d'informations par l'utilisateur
-        cout<< "Souhaitez-vous effectuer une maintenance sur une voiture ? [O/N]" <<endl;
-        cin>> maintenance;
-        if(maintenance == "O" || maintenance == "o" || maintenance == "0"){
-            cout<< "ATTENTION : Vous ne pouvez effectuer qu'une action par tour, et sur une seule voiture ! Choisissez sagement ;-)" <<endl;
-            cout<< "Sur quelle voiture ? \n    1." << voiture1.nomVoiture << "\n    2." << voiture2.nomVoiture <<endl;
-            cin>> voitureMaintenance;
+            // Changement d'informations par l'utilisateur
+            cout<< "Souhaitez-vous effectuer une maintenance sur une voiture ? [O/N]" <<endl;
+            cin>> maintenance;
+            if(maintenance == "O" || maintenance == "o" || maintenance == "0"){
+                cout<< "ATTENTION : Vous ne pouvez effectuer qu'une action par tour, et sur une seule voiture ! Choisissez sagement ;-)" <<endl;
+                cout<< "Sur quelle voiture ? \n" <<endl;
+                if(voiture1.alive == 1){ cout<< "1." << voiture1.nomVoiture <<endl;};
+                if(voiture2.alive == 1){ cout<< "2." << voiture2.nomVoiture <<endl;};
+                cin>> voitureMaintenance;
 
-            if(voitureMaintenance == 1) { voiture1.maintenance();}
-            else if(voitureMaintenance == 2) { voiture2.maintenance();}
-            else { break;};
+                if(voitureMaintenance == 1) { voiture1.maintenance();}
+                else if(voitureMaintenance == 2) { voiture2.maintenance();}
+                else { break;};
+            }
         }
     }
     return 0;
