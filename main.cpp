@@ -231,8 +231,6 @@ public:
         // Direction
         if (dureteDirection > 95){accident = 1;};
 
-        // TODO : côté dans le virage + vitesse => accident ou pas si à l'intérieur ou l'exterieur
-
         // Moteur
         if (temperatureMoteur > 60) {
             temperatureMoteur += 1;
@@ -297,7 +295,7 @@ public:
     };
 
     void verifications(){
-        if (accident) { cout << colors.red << "La voiture" << nomVoiture << " a eut un accident ! Elle quitte la course..." << colors.close << endl; alive = 0;}
+        if (accident) { cout << colors.red << "La voiture " << nomVoiture << " a eut un accident ! Elle quitte la course..." << colors.close << endl; alive = 0;}
         if (niveauEssence <= 0) { cout << colors.red << "C'est la panne sèche pour " << nomVoiture << " ! Elle quitte la course..." << colors.close << endl; alive = 0;}
         if (temperatureMoteur >= 100) { cout<< colors.red << "Surchauffe du moteur pour " << nomVoiture << " ! Elle quitte la course..." << colors.close <<endl; alive = 0;}
         if (usureFreins >= 100) { cout<< colors.red <<"Les freins de " << nomVoiture << "  sont HS ! Elle quitte la course..." << colors.close <<endl; alive = 0;}
@@ -309,23 +307,25 @@ public:
 
     void afficheTexteStat(){
         cout<< colors.blue << "\n *** Statistiques de " << nomVoiture << " : ***" << colors.close <<endl;
-        cout<< colors.black << "    Type : " << typeVoiture << colors.close <<endl;
-        cout<< "    Carburant :          ";
-        affichageDiagrameStat("d", niveauEssence);
-        cout<< "\n    Pneus avant: ";
-        cout<< "\n         - Usure :       ";
-        affichageDiagrameStat("c", usurePneusAvant);
-        cout<< "\n         - Pression :    ";
-        affichageDiagrameStat("pp", pressionPneusAvant);
-        cout<< "\n    Pneus arrière : ";
-        cout<< "\n         - Usure :       ";
-        affichageDiagrameStat("c", usurePneusArriere);
-        cout<< "\n         - Pression :    ";
-        affichageDiagrameStat("pp", pressionPneusArriere);
-        cout<< "\n    Temperature moteur : ";
-        affichageDiagrameStat("temp", temperatureMoteur);
-        cout<< "\n    Freins :             ";
-        affichageDiagrameStat("c", usureFreins);
+        if(alive){
+            cout<< colors.black << "    Type : " << typeVoiture << colors.close <<endl;
+            cout<< "    Carburant :          ";
+            affichageDiagrameStat("d", niveauEssence);
+            cout<< "\n    Pneus avant: ";
+            cout<< "\n         - Usure :       ";
+            affichageDiagrameStat("c", usurePneusAvant);
+            cout<< "\n         - Pression :    ";
+            affichageDiagrameStat("pp", pressionPneusAvant);
+            cout<< "\n    Pneus arrière : ";
+            cout<< "\n         - Usure :       ";
+            affichageDiagrameStat("c", usurePneusArriere);
+            cout<< "\n         - Pression :    ";
+            affichageDiagrameStat("pp", pressionPneusArriere);
+            cout<< "\n    Temperature moteur : ";
+            affichageDiagrameStat("temp", temperatureMoteur);
+            cout<< "\n    Freins :             ";
+            affichageDiagrameStat("c", usureFreins);
+        }
     }
 };
 
@@ -340,6 +340,9 @@ int main() {
 
     string ajustement;
     int ajustementAFaire;
+
+    string paramConduiteV1;
+    string paramConduiteV2;
 
     int nombreTours = 50;
 
@@ -380,8 +383,25 @@ int main() {
     for (int i = 1; i <= 10 ; i++) {
         cout<< colors.cyan << "\n == TOUR "<< i << " ==" << colors.close <<endl;
 
-        //TODO : Ne faire les changements que si l'utilisateur le souhaite
-        if (voiture1.alive){
+        if (voiture1.alive && i > 1){
+            cout<< "Pour rappel : " <<endl;
+            cout<< "    - Vitesse en ligne droite : " << voiture1.vitesseDroit << "km/h" <<endl;
+            cout<< "    - Vitesse dans les virages : " << voiture1.vitesseVirage << "km/h" <<endl;
+            cout<< "    - Direction : " << voiture1.dureteDirection << "%" <<endl;
+            cout<< colors.magenta <<"Souhaitez-vous changer les vitesses et/ou la direction par rapport au tour précedent pour " << voiture1.nomVoiture << " ? [O/N]" << colors.close <<endl;
+            cin>> paramConduiteV1;
+        }
+
+        if (voiture2.alive && i > 1){
+            cout<< "Pour rappel : " <<endl;
+            cout<< "    - Vitesse en ligne droite : " << voiture2.vitesseDroit << "km/h" <<endl;
+            cout<< "    - Vitesse dans les virages : " << voiture2.vitesseVirage << "km/h" <<endl;
+            cout<< "    - Direction : " << voiture2.dureteDirection << "%" <<endl;
+            cout<< colors.magenta <<"Souhaitez-vous changer les vitesses et/ou la direction par rapport au tour précedent pour " << voiture2.nomVoiture << " ? [O/N]" << colors.close <<endl;
+            cin>> paramConduiteV2;
+        }
+
+        if (voiture1.alive && (i == 1 || paramConduiteV1 == "O" || paramConduiteV1 == "o" || paramConduiteV1 == "0")){
             cout<< colors.blue << "*** PARAMETRES DE COURSE DE " << voiture1.nomVoiture << " ***" << colors.close <<endl;
             cout<< colors.magenta << "Vitesse dans les lignes droites : " << colors.close;
             cin>> voiture1.vitesseDroit;
@@ -389,31 +409,27 @@ int main() {
             cin>> voiture1.vitesseVirage;
             cout<< colors.magenta << "Paramétrage de la direction : " << colors.close;
             cin>> voiture1.dureteDirection;
-//            cout<< colors.magenta << "La voiture doit-elle rouler : \n 1. A gauche de la piste \n 2. A droite de la piste" <<colors.close <<endl;
-//            cin>> voiture1.ouRoulerSurPiste;
         };
-        if (voiture2.alive){
+        if (voiture2.alive && (i == 1 || paramConduiteV2 == "O" || paramConduiteV2 == "o" || paramConduiteV2 == "0" )){
             cout<< colors.blue << "*** PARAMETRES DE COURSE DE " << voiture2.nomVoiture << " ***" << colors.close <<endl;
             cout<< colors.magenta << "Vitesse dans les lignes droites : " << colors.close;
             cin>> voiture2.vitesseDroit;
             cout<< colors.magenta << "Vitesse dans les virages : " << colors.close;
             cin>> voiture2.vitesseVirage;
-//            cout<< colors.magenta << "La voiture doit-elle rouler : \n 1. A gauche de la piste \n 2. A droite de la piste" <<colors.close <<endl;
-//            cin>> voiture2.ouRoulerSurPiste;
             cout<< colors.magenta << "Paramétrage de la direction : " << colors.close;
             cin>> voiture2.dureteDirection;
-        }
+        };
 
         // Changement des différents éléments de la voiture suite au tour et affichage des stats
         if (voiture1.alive){
             voiture1.update();
-            voiture1.afficheTexteStat();
             voiture1.verifications();
+            voiture1.afficheTexteStat();
         }
         if (voiture2.alive){
             voiture2.update();
-            voiture2.afficheTexteStat();
             voiture2.verifications();
+            voiture2.afficheTexteStat();
         }
         // Vérification qu'on a pas perdu les deux voitures
         if( not voiture1.alive && not voiture2.alive) {nombreTours = i; break;}
@@ -439,6 +455,7 @@ int main() {
         else{
             consoleClear();
         }
+
     }
     cout<< colors.yellow << "== END OF GAME ==" <<colors.close <<endl;
     finDuJeu(voiture1.alive, voiture2.alive, nombreTours);
