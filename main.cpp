@@ -61,7 +61,7 @@ void affichageDiagrameStat(string type, int n) {
 
 void affichageProgression(int n){
     Colors colors;
-    cout<< colors.green << string(n, ' ') << colors.close;
+    cout<< colors.backGreen << string(n, ' ') << colors.close;
     cout<< colors.backWhite << string(50-n, ' ') << colors.close <<endl;
 };
 
@@ -382,6 +382,7 @@ int main() {
     // DEBUT DES TOURS
     for (int i = 1; i <= 10 ; i++) {
         cout<< colors.cyan << "\n == TOUR "<< i << " ==" << colors.close <<endl;
+        affichageProgression(i);
 
         if (voiture1.alive && i > 1){
             cout<< "Pour rappel : " <<endl;
