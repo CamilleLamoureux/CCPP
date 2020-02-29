@@ -65,14 +65,35 @@ void affichageProgression(int n){
     cout<< colors.backWhite << string(50-n, ' ') << colors.close <<endl;
 };
 
+bool check(string type, int value){
+    Colors colors;
+
+    if(type == "boite_vitesse") {
+        if(value <= 6 && value > 0) {return true;} else {cout<< "Choisissez le nombre de vitesses de la boite de vitesses : " <<endl; return false;};
+    }
+    else if (type == "type_voiture") {
+        if(value > 0 && value <= 3) {return true;} else {cout<< "Types : \n 1. Propulsion \n 2. Traction \n 3. Quatre roues motrices \n Choisissez le type de la voiture : " <<endl; return false;}
+    }
+    else if (type == "vitesse_droit") {
+        if(value <= 323 && value > 0) {return true;} else {cout<< colors.magenta << "Vitesse dans les lignes droites : " << colors.close; return false;}
+    }
+    else if (type == "vitesse_virage") {
+        if(value <= 323 && value > 0) {return true;} else {cout<< colors.magenta << "Vitesse dans les virages : " << colors.close; return false;}
+    }
+    else if (type == "direction") {
+        if(value > 0 && value <= 100) {return true;} else {cout<< colors.magenta << "Paramétrage de la direction : " << colors.close; return false;}
+    }
+    return false;
+};
+
 // JEU
 void finDuJeu(bool alive1, bool alive2, int nombreTours){
     Colors colors;
     consoleClear();
 
-    if(alive1 == 1 && alive2 == 1 && nombreTours >= 50) {cout<< colors.green << "Votre victoire est totale ! Vous avez réussit à maintenair vos deux voitures pendant 50 tours !" << colors.close <<endl;}
-    else if((alive1 == 1 || alive2 == 1) && nombreTours >= 50) {cout<< colors.yellow << "Votre victoire est partielle ! Vous avez réussit à maintenair vos une voiture sur les deux pendant 50 tours !" << colors.close <<endl;}
-    else if((alive1 == 0 && alive2 == 0) && nombreTours >= 50) {cout<< colors.red << "Vous avez perdu... Vous avez tenu " << nombreTours << " tours ! Vous pouvez toujours retenter votre chance !" << colors.close <<endl;}
+    if(alive1 && alive2 && nombreTours >= 50) {cout<< colors.green << "Votre victoire est totale ! Vous avez réussit à maintenair vos deux voitures pendant 50 tours !" << colors.close <<endl;}
+    else if((alive1 || alive2) && nombreTours >= 50) {cout<< colors.yellow << "Votre victoire est partielle ! Vous avez réussit à maintenair vos une voiture sur les deux pendant 50 tours !" << colors.close <<endl;}
+    else if((alive1 && not alive2) && nombreTours >= 50) {cout<< colors.red << "Vous avez perdu... Vous avez tenu " << nombreTours << " tours ! Vous pouvez toujours retenter votre chance !" << colors.close <<endl;}
     else { cout<< "Unexpected end of game" <<endl;};
 }
 
@@ -96,17 +117,17 @@ public:
     // Chose by user au début
     string nomVoiture;
     string typeVoiture; // propulsion, traction ou 4x4
-    bool propulsion = 0;
-    bool traction = 0;
-    bool quatreRouesMotrices = 0;
+    bool propulsion = false;
+    bool traction = false;
+    bool quatreRouesMotrices = false;
     int nombreVitesses;
 
     // Will change during a turn
-    bool alive = 1;
-    bool accident = 0;
+    bool alive = true;
+    bool accident = false;
 
-    int vitesseDroit = 323; // en km/h
-    int vitesseVirage = 323; // en km/h
+    int vitesseDroit = 0; // en km/h
+    int vitesseVirage = 0; // en km/h
     string ouRoulerSurPiste; // gauche ou droite
 
     int temperatureMoteur = 50; // en %
@@ -118,7 +139,7 @@ public:
     int usurePneusArriere = 5; // en %
 
     int usureFreins = 5; // en %
-    int dureteDirection = 5; // en %
+    int dureteDirection = 0; // en %
 
     // METHODES
     void creationVoiture(string nom, int boiteVitesse, int type) {
@@ -127,15 +148,15 @@ public:
 
         switch (type) {
             case 1 :
-                propulsion = 1;
+                propulsion = true;
                 typeVoiture = "propulsion";
                 break;
             case 2 :
-                traction = 1;
+                traction = true;
                 typeVoiture = "traction";
                 break;
             case 3 :
-                quatreRouesMotrices =1;
+                quatreRouesMotrices = true;
                 typeVoiture = "quatre roues motrices";
                 break;
         }
@@ -157,10 +178,10 @@ public:
             }
             else if (pressionPneusAvant > 90) { // trop gonflé
                 if (vitesseVirage > 300){
-                    accident = 1;
+                    accident = true;
                 }
                 else if (vitesseVirage > 250 && dureteDirection > 80){
-                    accident = 1;
+                    accident = true;
                 }
             }
             else {
@@ -174,10 +195,10 @@ public:
             }
             else if (pressionPneusArriere > 90) { // trop gonflé
                 if (vitesseVirage > 300){
-                    accident = 1;
+                    accident = true;
                 }
                 else if (vitesseVirage > 250 && dureteDirection > 80){
-                    accident = 1;
+                    accident = true;
                 }
             }
             else {
@@ -190,10 +211,10 @@ public:
             }
             else if (pressionPneusArriere > 90) { // trop gonflé
                 if (vitesseVirage > 300){
-                    accident = 1;
+                    accident = true;
                 }
                 else if (vitesseVirage > 250 && dureteDirection > 80){
-                    accident = 1;
+                    accident = true;
                 }
             }
             else {
@@ -204,10 +225,10 @@ public:
             }
             else if (pressionPneusAvant > 90) { // trop gonflé
                 if (vitesseVirage > 300){
-                    accident = 1;
+                    accident = true;
                 }
                 else if (vitesseVirage > 250 && dureteDirection > 80){
-                    accident = 1;
+                    accident = true;
                 }
             }
             else {
@@ -229,7 +250,7 @@ public:
         };
 
         // Direction
-        if (dureteDirection > 95){accident = 1;};
+        if (dureteDirection > 95){accident = true;};
 
         // Moteur
         if (temperatureMoteur > 60) {
@@ -295,14 +316,14 @@ public:
     };
 
     void verifications(){
-        if (accident) { cout << colors.red << "La voiture " << nomVoiture << " a eut un accident ! Elle quitte la course..." << colors.close << endl; alive = 0;}
-        if (niveauEssence <= 0) { cout << colors.red << "C'est la panne sèche pour " << nomVoiture << " ! Elle quitte la course..." << colors.close << endl; alive = 0;}
-        if (temperatureMoteur >= 100) { cout<< colors.red << "Surchauffe du moteur pour " << nomVoiture << " ! Elle quitte la course..." << colors.close <<endl; alive = 0;}
-        if (usureFreins >= 100) { cout<< colors.red <<"Les freins de " << nomVoiture << "  sont HS ! Elle quitte la course..." << colors.close <<endl; alive = 0;}
-        if (pressionPneusArriere >= 100 && propulsion) { cout<< colors.red << "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus arrière sont à plat ! C'est une propulsion ! Elle quitte la course..." << colors.close <<endl; alive = 0;}
-        if (pressionPneusAvant >= 100 && traction) { cout<< colors.red <<"Compliqué pour " << nomVoiture << " de rouler alors que ses pneus avant sont à plat ! C'est une traction ! Elle quitte la course..." << colors.close <<endl; alive = 0;}
-        if (pressionPneusAvant >= 100 && pressionPneusArriere >= 100) { cout<< colors.red <<"Compliqué pour " << nomVoiture << " de rouler alors que ses pneus sont tous à plat ! Elle quitte la course..." << colors.close <<endl; alive = 0;}
-        if (usurePneusAvant >= 100 && usurePneusArriere >= 100) { cout<< colors.red <<"Les pneus de " << nomVoiture << " sont tous trop usés ! Elle quitte la course..." << colors.close <<endl; alive = 0;}
+        if (accident) { cout << colors.red << "La voiture " << nomVoiture << " a eut un accident ! Elle quitte la course..." << colors.close << endl; alive = false;}
+        if (niveauEssence <= 0) { cout << colors.red << "C'est la panne sèche pour " << nomVoiture << " ! Elle quitte la course..." << colors.close << endl; alive = false;}
+        if (temperatureMoteur >= 100) { cout<< colors.red << "Surchauffe du moteur pour " << nomVoiture << " ! Elle quitte la course..." << colors.close <<endl; alive = false;}
+        if (usureFreins >= 100) { cout<< colors.red <<"Les freins de " << nomVoiture << "  sont HS ! Elle quitte la course..." << colors.close <<endl; alive = false;}
+        if (pressionPneusArriere >= 100 && propulsion) { cout<< colors.red << "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus arrière sont à plat ! C'est une propulsion ! Elle quitte la course..." << colors.close <<endl; alive = false;}
+        if (pressionPneusAvant >= 100 && traction) { cout<< colors.red <<"Compliqué pour " << nomVoiture << " de rouler alors que ses pneus avant sont à plat ! C'est une traction ! Elle quitte la course..." << colors.close <<endl; alive = false;}
+        if (pressionPneusAvant >= 100 && pressionPneusArriere >= 100) { cout<< colors.red <<"Compliqué pour " << nomVoiture << " de rouler alors que ses pneus sont tous à plat ! Elle quitte la course..." << colors.close <<endl; alive = false;}
+        if (usurePneusAvant >= 100 && usurePneusArriere >= 100) { cout<< colors.red <<"Les pneus de " << nomVoiture << " sont tous trop usés ! Elle quitte la course..." << colors.close <<endl; alive = false;}
     };
 
     void afficheTexteStat(){
@@ -333,10 +354,10 @@ int main() {
     // VARIABLES
     string nom_voiture_1;
     string nom_voiture_2;
-    int nombre_vitesses_1;
-    int nombre_vitesses_2;
-    int type_1;
-    int type_2;
+    int nombre_vitesses_1 = 0;
+    int nombre_vitesses_2 = 0;
+    int type_1 = 0;
+    int type_2 = 0;
 
     string ajustement;
     int ajustementAFaire;
@@ -351,26 +372,17 @@ int main() {
     // CREATION DES VOITURES
     cout<< colors.yellow << "== CREATION DES VOITURES ==" << colors.close <<endl;
     cout<< colors.blue << "*** PREMIERE VOITURE ***" << colors.close <<endl;
-    cout<< "Choisissez le nom de la voiture : Voiture1" <<endl;
-    //cin>> nom_voiture_1;
-    cout<< "Choisissez le nombre de vitesse : 6 " <<endl;
-    //cin>> nombre_vitesses_1;
-    cout<< "Types : \n 1. Propulsion \n 2. Traction \n 3. Quatre roues motrices \n Choisissez le type de la voiture : 1" <<endl;
-    //cin>> type_1;
-    nom_voiture_1 = "Voiture1";
-    nombre_vitesses_1 = 6;
-    type_1 = 1;
+    cout<< "Choisissez le nom de la voiture : " <<endl;
+    cin>> nom_voiture_1;
+    while (not check("boite_vitesse",nombre_vitesses_1)) {cin>> nombre_vitesses_1;}
+    while (not check("type_voiture",type_1)){cin>> type_1;}
+
 
     cout<< colors.blue << "*** DEUXIEME VOITURE ***" << colors.close <<endl;
-    cout<< "Choisissez le nom de la voiture : Voitre2" <<endl;
-    //cin>> nom_voiture_2;
-    cout<< "Choisissez le nombre de vitesse : 5 " <<endl;
-    //cin>> nombre_vitesses_2;
-    cout<< "Types : \n 1. Propulsion \n 2. Traction \n 3. Quatre roues motrices \n Choisissez le type de la voiture : 3" <<endl;
-    //cin>> type_2;
-    nom_voiture_2 = "Voiture2";
-    nombre_vitesses_2 = 5;
-    type_2 = 3;
+    cout<< "Choisissez le nom de la voiture : " <<endl;
+    cin>> nom_voiture_2;
+    while (not check("boite_vitesse",nombre_vitesses_2)) {cin>> nombre_vitesses_2;}
+    while (not check("type_voiture",type_2)){cin>> type_2;}
 
     Voiture voiture1, voiture2;
 
@@ -404,21 +416,15 @@ int main() {
 
         if (voiture1.alive && (i == 1 || paramConduiteV1 == "O" || paramConduiteV1 == "o" || paramConduiteV1 == "0")){
             cout<< colors.blue << "*** PARAMETRES DE COURSE DE " << voiture1.nomVoiture << " ***" << colors.close <<endl;
-            cout<< colors.magenta << "Vitesse dans les lignes droites : " << colors.close;
-            cin>> voiture1.vitesseDroit;
-            cout<< colors.magenta << "Vitesse dans les virages : " << colors.close;
-            cin>> voiture1.vitesseVirage;
-            cout<< colors.magenta << "Paramétrage de la direction : " << colors.close;
-            cin>> voiture1.dureteDirection;
+            while (not check("vitesse_droit",voiture1.vitesseDroit)) {cin>> voiture1.vitesseDroit;}
+            while (not check("vitesse_virage",voiture1.vitesseVirage)) {cin>> voiture1.vitesseVirage;}
+            while (not check("direction",voiture1.dureteDirection)) {cin>> voiture1.dureteDirection;}
         };
         if (voiture2.alive && (i == 1 || paramConduiteV2 == "O" || paramConduiteV2 == "o" || paramConduiteV2 == "0" )){
             cout<< colors.blue << "*** PARAMETRES DE COURSE DE " << voiture2.nomVoiture << " ***" << colors.close <<endl;
-            cout<< colors.magenta << "Vitesse dans les lignes droites : " << colors.close;
-            cin>> voiture2.vitesseDroit;
-            cout<< colors.magenta << "Vitesse dans les virages : " << colors.close;
-            cin>> voiture2.vitesseVirage;
-            cout<< colors.magenta << "Paramétrage de la direction : " << colors.close;
-            cin>> voiture2.dureteDirection;
+            while (not check("vitesse_droit",voiture2.vitesseDroit)) {cin>> voiture2.vitesseDroit;}
+            while (not check("vitesse_virage",voiture2.vitesseVirage)) {cin>> voiture2.vitesseVirage;}
+            while (not check("direction",voiture2.dureteDirection)) {cin>> voiture2.dureteDirection;}
         };
 
         // Changement des différents éléments de la voiture suite au tour et affichage des stats
