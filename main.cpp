@@ -83,6 +83,12 @@ bool check(string type, int value){
     else if (type == "direction") {
         if(value > 0 && value <= 100) {return true;} else {cout<< colors.magenta << "Paramétrage de la direction : " << colors.close; return false;}
     }
+    else if (type == "one_or_two") {
+        if (value > 0 && value <=3) {return true;} else {cout<< "Sur quelle voiture ?" <<endl; return false; }
+    }
+//    else if (type == "yes_or_no") {
+//        if (to_string(value) == "O" || to_string(value) == "o" || to_string(value) == "0" || to_string(value) == "N") { return true;} else {cout<< "O/N" <<endl; return false;}
+//    }
     return false;
 };
 
@@ -250,7 +256,7 @@ public:
         };
 
         // Direction
-        if (dureteDirection > 95){accident = true;};
+        if (dureteDirection > 95){accident = true;}; // si la direction est trop dure
 
         // Moteur
         if (temperatureMoteur > 60) {
@@ -275,7 +281,7 @@ public:
         int aChanger;
 
         cout<< colors.yellow << "\n == AJUSTEMENT DE " << nomVoiture << " ==" << colors.close <<endl;
-        cout<< "0. Exit \n 1. Faire le plein d'niveauEssence \n 2. Faire refroidir le moteur \n 3. Regonfler les pneus avants (+20%)\n 4. Regonfler les pneus arrières (+20%) \n 5. Changer les freins \n 6. Changer les pneus avants \n 7. Changer les pneus arrières "<<endl;
+        cout<< "0. Exit \n 1. Faire le plein d'essence \n 2. Faire refroidir le moteur (-50%)\n 3. Regonfler les pneus avants (+20%)\n 4. Regonfler les pneus arrières (+20%) \n 5. Changer les freins \n 6. Changer les pneus avants \n 7. Changer les pneus arrières "<<endl;
         cin>> aChanger;
 
         consoleClear();
@@ -359,8 +365,8 @@ int main() {
     int type_1 = 0;
     int type_2 = 0;
 
-    string ajustement;
-    int ajustementAFaire;
+    string ajustement = "nothing yet";
+    int ajustementAFaire = 0;
 
     string paramConduiteV1;
     string paramConduiteV2;
@@ -377,7 +383,6 @@ int main() {
     while (not check("boite_vitesse",nombre_vitesses_1)) {cin>> nombre_vitesses_1;}
     while (not check("type_voiture",type_1)){cin>> type_1;}
 
-
     cout<< colors.blue << "*** DEUXIEME VOITURE ***" << colors.close <<endl;
     cout<< "Choisissez le nom de la voiture : " <<endl;
     cin>> nom_voiture_2;
@@ -393,6 +398,7 @@ int main() {
 
     // DEBUT DES TOURS
     for (int i = 1; i <= 10 ; i++) {
+        // Affichage du numéro du tour et de la progression dans la course (but => 50 tours)
         cout<< colors.cyan << "\n == TOUR "<< i << " ==" << colors.close <<endl;
         affichageProgression(i);
 
@@ -431,15 +437,18 @@ int main() {
         if (voiture1.alive){
             voiture1.update();
             voiture1.verifications();
-            voiture1.afficheTexteStat();
         }
         if (voiture2.alive){
             voiture2.update();
             voiture2.verifications();
-            voiture2.afficheTexteStat();
         }
+
         // Vérification qu'on a pas perdu les deux voitures
         if( not voiture1.alive && not voiture2.alive) {nombreTours = i; break;}
+
+        // Affichage des stats
+        if (voiture1.alive) {voiture1.afficheTexteStat();};
+        if (voiture2.alive) {voiture2.afficheTexteStat();};
 
         // Ajustements par l'utilisateur
         cout<< colors.magenta <<"Souhaitez-vous effectuer un ajustement sur une voiture ? [O/N]" << colors.close <<endl;
@@ -447,11 +456,10 @@ int main() {
 
         if(ajustement == "O" || ajustement == "o" || ajustement == "0"){
             cout<< colors.red << "ATTENTION : Vous ne pouvez effectuer qu'une action par tour, et sur une seule voiture ! Choisissez sagement ;-)" << colors.close <<endl;
-            cout<< "Sur quelle voiture ?" <<endl;
-            cout<< "0. Exit" <<endl;
             if(voiture1.alive){ cout<< "1. " << voiture1.nomVoiture <<endl;};
             if(voiture2.alive){ cout<< "2. " << voiture2.nomVoiture <<endl;};
-            cin >> ajustementAFaire;
+            cout<< "3. Exit" <<endl;
+            while (not check("one_or_two", ajustementAFaire)) {cin >> ajustementAFaire;};
 
             if(ajustementAFaire == 1) {consoleClear();
                 voiture1.afficheTexteStat(); voiture1.ajustement();}
