@@ -321,6 +321,19 @@ public:
         }
     };
 
+    void changementParamCourse(){
+        // Remise à 0 des valeurs qu'on va changer
+        vitesseVirage = 0;
+        vitesseDroit = 0;
+        dureteDirection = 0;
+
+        // Changement des valeurs
+        cout<< colors.blue << "*** PARAMETRES DE COURSE DE " << nomVoiture << " ***" << colors.close <<endl;
+        while (not check("vitesse_droit",vitesseDroit)) {cin>> vitesseDroit;}
+        while (not check("vitesse_virage",vitesseVirage)) {cin>> vitesseVirage;}
+        while (not check("direction",dureteDirection)) {cin>> dureteDirection;}
+    };
+
     void verifications(){
         if (accident) { cout << colors.red << "La voiture " << nomVoiture << " a eut un accident ! Elle quitte la course..." << colors.close << endl; alive = false;}
         if (niveauEssence <= 0) { cout << colors.red << "C'est la panne sèche pour " << nomVoiture << " ! Elle quitte la course..." << colors.close << endl; alive = false;}
@@ -353,6 +366,13 @@ public:
             cout<< "\n    Freins :             ";
             affichageDiagrameStat("c", usureFreins);
         }
+    }
+
+    void affichageParamCourse(){
+        cout<< "Pour rappel : " <<endl;
+        cout<< "    - Vitesse en ligne droite : " << vitesseDroit << "km/h" <<endl;
+        cout<< "    - Vitesse dans les virages : " << vitesseVirage << "km/h" <<endl;
+        cout<< "    - Direction : " << dureteDirection << "%" <<endl;
     }
 };
 
@@ -402,38 +422,44 @@ int main() {
         cout<< colors.cyan << "\n == TOUR "<< i << " ==" << colors.close <<endl;
         affichageProgression(i);
 
-        if (voiture1.alive && i > 1){
-            cout<< "Pour rappel : " <<endl;
-            cout<< "    - Vitesse en ligne droite : " << voiture1.vitesseDroit << "km/h" <<endl;
-            cout<< "    - Vitesse dans les virages : " << voiture1.vitesseVirage << "km/h" <<endl;
-            cout<< "    - Direction : " << voiture1.dureteDirection << "%" <<endl;
-            cout<< colors.magenta <<"Souhaitez-vous changer les vitesses et/ou la direction par rapport au tour précedent pour " << voiture1.nomVoiture << " ? [O/N]" << colors.close <<endl;
-            cin>> paramConduiteV1;
-        }
-
-        if (voiture2.alive && i > 1){
-            cout<< "Pour rappel : " <<endl;
-            cout<< "    - Vitesse en ligne droite : " << voiture2.vitesseDroit << "km/h" <<endl;
-            cout<< "    - Vitesse dans les virages : " << voiture2.vitesseVirage << "km/h" <<endl;
-            cout<< "    - Direction : " << voiture2.dureteDirection << "%" <<endl;
-            cout<< colors.magenta <<"Souhaitez-vous changer les vitesses et/ou la direction par rapport au tour précedent pour " << voiture2.nomVoiture << " ? [O/N]" << colors.close <<endl;
-            cin>> paramConduiteV2;
-        }
-
-        if (voiture1.alive && (i == 1 || paramConduiteV1 == "O" || paramConduiteV1 == "o" || paramConduiteV1 == "0")){
-            cout<< colors.blue << "*** PARAMETRES DE COURSE DE " << voiture1.nomVoiture << " ***" << colors.close <<endl;
-            while (not check("vitesse_droit",voiture1.vitesseDroit)) {cin>> voiture1.vitesseDroit;}
-            while (not check("vitesse_virage",voiture1.vitesseVirage)) {cin>> voiture1.vitesseVirage;}
-            while (not check("direction",voiture1.dureteDirection)) {cin>> voiture1.dureteDirection;}
-        };
-        if (voiture2.alive && (i == 1 || paramConduiteV2 == "O" || paramConduiteV2 == "o" || paramConduiteV2 == "0" )){
-            cout<< colors.blue << "*** PARAMETRES DE COURSE DE " << voiture2.nomVoiture << " ***" << colors.close <<endl;
-            while (not check("vitesse_droit",voiture2.vitesseDroit)) {cin>> voiture2.vitesseDroit;}
-            while (not check("vitesse_virage",voiture2.vitesseVirage)) {cin>> voiture2.vitesseVirage;}
-            while (not check("direction",voiture2.dureteDirection)) {cin>> voiture2.dureteDirection;}
+        // SI C'EST LE PREMIER TOUR : Saisie des paramètres de course des voiture
+        if (i == 1) {
+            voiture1.changementParamCourse();
+            voiture2.changementParamCourse();
         };
 
-        // Changement des différents éléments de la voiture suite au tour et affichage des stats
+        // SI C'EST PAS LE PREMIER TOUR : Affichage et potentiel changement des paramètres de course des voitures
+        if (i > 1) {
+            if (voiture1.alive) {
+                voiture1.affichageParamCourse();
+                cout<< colors.magenta
+                    <<"Souhaitez-vous changer les vitesses et/ou la direction par rapport au tour précedent pour "
+                    << voiture1.nomVoiture
+                    << " ? [O/N]"
+                    << colors.close <<endl;
+                cin>> paramConduiteV1;
+
+                if (paramConduiteV1 == "O" || paramConduiteV1 == "o" || paramConduiteV1 == "0") {
+                    voiture1.changementParamCourse();
+                }
+            };
+
+            if (voiture2.alive) {
+                voiture2.affichageParamCourse();
+                cout << colors.magenta
+                     << "Souhaitez-vous changer les vitesses et/ou la direction par rapport au tour précedent pour "
+                     << voiture2.nomVoiture
+                     << " ? [O/N]"
+                     << colors.close << endl;
+                cin >> paramConduiteV2;
+
+                if (paramConduiteV2 == "O" || paramConduiteV2 == "o" || paramConduiteV2 == "0") {
+                    voiture2.changementParamCourse();
+                }
+            };
+        }
+
+        // Changement des différents éléments de la voiture suite au tour
         if (voiture1.alive){
             voiture1.update();
             voiture1.verifications();
