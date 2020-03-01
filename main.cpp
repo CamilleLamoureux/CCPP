@@ -3,26 +3,24 @@
 
 using namespace std;
 
-// AFFICHAGE
+/////////////////////////////////////////////////////// AFFICHAGE //////////////////////////////////////////////////////
 class Colors {
-
-
 public:
+    // Couleurs de texte
     const string black = "\033[1;30m";
     const string red = "\033[1;31m";
     const string green = "\033[1;32m";
     const string yellow = "\033[1;33m";
     const string blue = "\033[1;34m";
     const string magenta = "\033[1;35m";
-    const string cyan = "\033[1;36m";
-    const string white = "\033[1;37m";
 
+    // Couleur de surlignage
     const string backWhite = "\033[1;47m";
     const string backRed = "\033[1;41m";
     const string backGreen = "\033[1;42m";
     const string backYellow = "\033[1;43m";
-    const string backBlack = "\033[1;40m";
 
+    // Balise de fermeture
     const string close = "\033[0m";
 };
 
@@ -61,10 +59,12 @@ void affichageDiagrameStat(string type, int n) {
 
 void affichageProgression(int n){
     Colors colors;
+
     cout<< colors.backGreen << string(n, ' ') << colors.close;
     cout<< colors.backWhite << string(50-n, ' ') << colors.close <<endl;
 };
 
+/////////////////////////////////////////////////////// JEU ////////////////////////////////////////////////////////////
 bool check(string type, int value){
     Colors colors;
 
@@ -92,9 +92,9 @@ bool check(string type, int value){
     return false;
 };
 
-// JEU
 void finDuJeu(bool alive1, bool alive2, int nombreTours){
     Colors colors;
+
     consoleClear();
 
     if(alive1 && alive2 && nombreTours >= 50) {cout<< colors.green << "Votre victoire est totale ! Vous avez réussit à maintenair vos deux voitures pendant 50 tours !" << colors.close <<endl;}
@@ -103,6 +103,7 @@ void finDuJeu(bool alive1, bool alive2, int nombreTours){
     else { cout<< "Unexpected end of game" <<endl;};
 }
 
+////////////////////////////////////////////////////// CLASSES /////////////////////////////////////////////////////////
 class Circuit {
 public:
     // ATTRIBUTS
@@ -117,10 +118,11 @@ public:
     Circuit circuit;
     Colors colors;
 
+    ///////////////////////////////////////////////// ATTRIBUTS/////////////////////////////////////////////////////////
     // Constantes
     const int poidsVoiture = 735; // kg
 
-    // Chose by user au début
+    // Choix de l'utilisateur
     string nomVoiture;
     string typeVoiture; // propulsion, traction ou 4x4
     bool propulsion = false;
@@ -128,13 +130,12 @@ public:
     bool quatreRouesMotrices = false;
     int nombreVitesses;
 
-    // Will change during a turn
+    // Update à chaque tour
     bool alive = true;
     bool accident = false;
 
     int vitesseDroit = 0; // en km/h
     int vitesseVirage = 0; // en km/h
-    string ouRoulerSurPiste; // gauche ou droite
 
     int temperatureMoteur = 50; // en %
     int niveauEssence = 100; // en %
@@ -147,7 +148,7 @@ public:
     int usureFreins = 5; // en %
     int dureteDirection = 0; // en %
 
-    // METHODES
+    ///////////////////////////////////////////////////  METHODES //////////////////////////////////////////////////////
     void creationVoiture(string nom, int boiteVitesse, int type) {
         nombreVitesses = boiteVitesse;
         nomVoiture = nom;
@@ -241,6 +242,7 @@ public:
                 usurePneusAvant += 7;
             };
         }
+
         pressionPneusArriere -= 2;
         pressionPneusAvant -= 2;
 
@@ -257,6 +259,14 @@ public:
 
         // Direction
         if (dureteDirection > 95){accident = true;}; // si la direction est trop dure
+        if (dureteDirection < 20){accident = true;}; // si la direction est trop rapide
+
+        // Vitesse
+        if (vitesseVirage >= 250){accident = true;}; // si on roule trop vite dans un virage
+        if (vitesseDroit > 300) {
+            if (dureteDirection > 80) {accident = true;} // si on roule trop vite avec une direction trop dure
+            else if (dureteDirection < 30) {accident = true;} // si on roule trop vite avec une direction trop rapide
+        }
 
         // Moteur
         if (temperatureMoteur > 60) {
@@ -275,13 +285,28 @@ public:
             temperatureMoteur += 10;
         };
 
+        // Mise à 0 des valeurs négatives pour ne pas avoir d'erreur d'affichage
+        if (temperatureMoteur < 0) {temperatureMoteur = 0;};
+        if (pressionPneusArriere < 0) {pressionPneusArriere = 0;};
+        if (pressionPneusAvant < 0) {pressionPneusAvant = 0;};
+        if (usurePneusAvant < 0) {usurePneusAvant = 0;};
+        if (usurePneusArriere < 0) {usurePneusArriere = 0;};
+        if (usureFreins < 0) {usureFreins = 0;};
+        if (niveauEssence < 0) {niveauEssence = 0;};
+        if (temperatureMoteur < 0) {temperatureMoteur = 0;};
     }
 
     void ajustement(){
         int aChanger;
 
         cout<< colors.yellow << "\n == AJUSTEMENT DE " << nomVoiture << " ==" << colors.close <<endl;
-        cout<< "0. Exit \n 1. Faire le plein d'essence \n 2. Faire refroidir le moteur (-50%)\n 3. Regonfler les pneus avants (+20%)\n 4. Regonfler les pneus arrières (+20%) \n 5. Changer les freins \n 6. Changer les pneus avants \n 7. Changer les pneus arrières "<<endl;
+        cout<< "0. Exit \n 1. Faire le plein d'essence "
+               "\n 2. Faire refroidir le moteur (-50%)"
+               "\n 3. Regonfler les pneus avants (+20%)"
+               "\n 4. Regonfler les pneus arrières (+20%) "
+               "\n 5. Changer les freins "
+               "\n 6. Changer les pneus avants "
+               "\n 7. Changer les pneus arrières "<<endl;
         cin>> aChanger;
 
         consoleClear();
@@ -335,14 +360,73 @@ public:
     };
 
     void verifications(){
-        if (accident) { cout << colors.red << "La voiture " << nomVoiture << " a eut un accident ! Elle quitte la course..." << colors.close << endl; alive = false;}
-        if (niveauEssence <= 0) { cout << colors.red << "C'est la panne sèche pour " << nomVoiture << " ! Elle quitte la course..." << colors.close << endl; alive = false;}
-        if (temperatureMoteur >= 100) { cout<< colors.red << "Surchauffe du moteur pour " << nomVoiture << " ! Elle quitte la course..." << colors.close <<endl; alive = false;}
-        if (usureFreins >= 100) { cout<< colors.red <<"Les freins de " << nomVoiture << "  sont HS ! Elle quitte la course..." << colors.close <<endl; alive = false;}
-        if (pressionPneusArriere >= 100 && propulsion) { cout<< colors.red << "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus arrière sont à plat ! C'est une propulsion ! Elle quitte la course..." << colors.close <<endl; alive = false;}
-        if (pressionPneusAvant >= 100 && traction) { cout<< colors.red <<"Compliqué pour " << nomVoiture << " de rouler alors que ses pneus avant sont à plat ! C'est une traction ! Elle quitte la course..." << colors.close <<endl; alive = false;}
-        if (pressionPneusAvant >= 100 && pressionPneusArriere >= 100) { cout<< colors.red <<"Compliqué pour " << nomVoiture << " de rouler alors que ses pneus sont tous à plat ! Elle quitte la course..." << colors.close <<endl; alive = false;}
-        if (usurePneusAvant >= 100 && usurePneusArriere >= 100) { cout<< colors.red <<"Les pneus de " << nomVoiture << " sont tous trop usés ! Elle quitte la course..." << colors.close <<endl; alive = false;}
+        // Si on a eut un accident
+        if (accident) {
+            cout << colors.red
+                << "La voiture " << nomVoiture
+                << " a eut un accident ! Elle quitte la course..."
+                << colors.close << endl;
+            alive = false;};
+
+        // Si il n'y a plus d'essence
+        if (niveauEssence <= 0) {
+            cout << colors.red
+                << "C'est la panne sèche pour " << nomVoiture << " ! Elle quitte la course..."
+                << colors.close << endl;
+            alive = false;};
+
+        // Si le moteur est trop chaud
+        if (temperatureMoteur >= 100) {
+            cout<< colors.red
+                << "Surchauffe du moteur pour " << nomVoiture << " ! Elle quitte la course..."
+                << colors.close <<endl;
+            alive = false;};
+
+        // Si les freins sont trop usés
+        if (usureFreins >= 100) {
+            cout<< colors.red
+                <<"Les freins de " << nomVoiture << "  sont HS ! Elle quitte la course..."
+                << colors.close <<endl;
+            alive = false;};
+
+        // Si les pneus sont à plat
+        if (pressionPneusAvant <= 0 || pressionPneusArriere <= 0) {
+            cout<< colors.red
+                << "Les pneus de " << nomVoiture << "sont à plat ! Elle quitte la course..."
+                << colors.close <<endl;
+            alive = false;
+        };
+
+        // Si les pneus arrières sont trop sous gonflés sur une propulsion
+        if (pressionPneusArriere <= 10 && propulsion) {
+            cout<< colors.red
+                << "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus arrière sont sous-gonflés ! "
+                                                      "C'est une propulsion ! Elle quitte la course..."
+                << colors.close <<endl;
+            alive = false;};
+
+        // Si les pneus avants sont trop sous glonflés sur un traction
+        if (pressionPneusAvant <= 10 && traction) {
+            cout<< colors.red
+                <<"Compliqué pour " << nomVoiture << " de rouler alors que ses pneus avant sont sous-gonflés ! "
+                                                     "C'est une traction ! Elle quitte la course..."
+                << colors.close <<endl;
+            alive = false;};
+
+        // Si tous les pneus sont sous gonflés sur un 4x4
+        if (pressionPneusAvant <= 10 && pressionPneusArriere <= 10) {
+            cout<< colors.red
+                <<"Compliqué pour " << nomVoiture << " de rouler alors que ses pneus sont sous-gonflés! "
+                                                     "Elle quitte la course..."
+                << colors.close <<endl;
+            alive = false;};
+
+        // Si les pneus sont trop usés
+        if (usurePneusAvant >= 100 && usurePneusArriere >= 100) {
+            cout<< colors.red
+                <<"Les pneus de " << nomVoiture << " sont tous trop usés ! Elle quitte la course..."
+                << colors.close <<endl;
+            alive = false;};
     };
 
     void afficheTexteStat(){
@@ -374,48 +458,62 @@ public:
     }
 };
 
+////////////////////////////////////////////////////// MAIN ////////////////////////////////////////////////////////////
 int main() {
     // VARIABLES
-    string nom_voiture_1;
-    string nom_voiture_2;
-    int nombre_vitesses_1 = 0;
-    int nombre_vitesses_2 = 0;
-    int type_1 = 0;
-    int type_2 = 0;
-
-    string ajustement = "nothing yet";
-    int ajustementAFaire = 0;
-
-    string paramConduiteV1;
-    string paramConduiteV2;
-
-    int nombreTours = 50;
-
     Colors colors;
 
+    // Pour la creation des voitures
+    string nomVoiture1;
+    string nomVoiture2;
+    int nombreVitesses1 = 0;
+    int nombreVitesses2 = 0;
+    int type1 = 0;
+    int type2 = 0;
+
+    // Pour les paramètres de conduite
+    string paramConduiteV1 = "nothing yet";
+    string paramConduiteV2 = "nothing yet";
+
+    // Pour les ajustements
+    string ajustement;
+    int ajustementAFaire;
+
+    // Pour le jeu
+    int nombreTours = 50;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // CREATION DES VOITURES
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Saisie des variables par l'utilisateur
     cout<< colors.yellow << "== CREATION DES VOITURES ==" << colors.close <<endl;
     cout<< colors.blue << "*** Première voiture ***" << colors.close <<endl;
     cout<< "Choisissez le nom de la voiture : " <<endl;
-    cin>> nom_voiture_1;
-    while (not check("boite_vitesse",nombre_vitesses_1)) {cin>> nombre_vitesses_1;}
-    while (not check("type_voiture",type_1)){cin>> type_1;}
+    cin >> nomVoiture1;
+    while (not check("boite_vitesse", nombreVitesses1)) {cin >> nombreVitesses1;}
+    while (not check("type_voiture", type1)){cin >> type1;}
 
     cout<< colors.blue << "*** Deuxième voiture ***" << colors.close <<endl;
     cout<< "Choisissez le nom de la voiture : " <<endl;
-    cin>> nom_voiture_2;
-    while (not check("boite_vitesse",nombre_vitesses_2)) {cin>> nombre_vitesses_2;}
-    while (not check("type_voiture",type_2)){cin>> type_2;}
+    cin >> nomVoiture2;
+    while (not check("boite_vitesse", nombreVitesses2)) {cin >> nombreVitesses2;}
+    while (not check("type_voiture", type2)){cin >> type2;}
 
+    // Création des objets
     Voiture voiture1, voiture2;
 
-    voiture1.creationVoiture(nom_voiture_1, nombre_vitesses_1, type_1);
-    voiture2.creationVoiture(nom_voiture_2, nombre_vitesses_2, type_2);
+    // Configuration des objets avec les variables de l'utilisateur
+    voiture1.creationVoiture(nomVoiture1, nombreVitesses1, type1);
+    voiture2.creationVoiture(nomVoiture2, nombreVitesses2, type2);
 
     consoleClear();
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // DEBUT DES TOURS
-    for (int i = 1; i <= 10 ; i++) {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    for (int i = 1; i <= 50 ; i++) {
         // Affichage du numéro du tour et de la progression dans la course (but => 50 tours)
         cout<< colors.yellow << "\n == TOUR "<< i << " ==" << colors.close <<endl;
         affichageProgression(i);
@@ -498,6 +596,11 @@ int main() {
         }
 
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // FIN DU JEU
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     cout<< colors.yellow << "== END OF GAME ==" <<colors.close <<endl;
     finDuJeu(voiture1.alive, voiture2.alive, nombreTours);
 
