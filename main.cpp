@@ -347,31 +347,29 @@ public:
 
     void afficheTexteStat(){
         cout<< colors.blue << "\n *** Statistiques de " << nomVoiture << " : ***" << colors.close <<endl;
-        if(alive){
-            cout<< colors.black << "    Type : " << typeVoiture << colors.close <<endl;
-            cout<< "    Carburant :          ";
-            affichageDiagrameStat("d", niveauEssence);
-            cout<< "\n    Pneus avant: ";
-            cout<< "\n         - Usure :       ";
-            affichageDiagrameStat("c", usurePneusAvant);
-            cout<< "\n         - Pression :    ";
-            affichageDiagrameStat("pp", pressionPneusAvant);
-            cout<< "\n    Pneus arrière : ";
-            cout<< "\n         - Usure :       ";
-            affichageDiagrameStat("c", usurePneusArriere);
-            cout<< "\n         - Pression :    ";
-            affichageDiagrameStat("pp", pressionPneusArriere);
-            cout<< "\n    Temperature moteur : ";
-            affichageDiagrameStat("temp", temperatureMoteur);
-            cout<< "\n    Freins :             ";
-            affichageDiagrameStat("c", usureFreins);
-        }
+        cout<< colors.black << "    Type : " << typeVoiture << colors.close <<endl;
+        cout<< "    Carburant :          ";
+        affichageDiagrameStat("d", niveauEssence);
+        cout<< "\n    Pneus avant: ";
+        cout<< "\n         - Usure :       ";
+        affichageDiagrameStat("c", usurePneusAvant);
+        cout<< "\n         - Pression :    ";
+        affichageDiagrameStat("pp", pressionPneusAvant);
+        cout<< "\n    Pneus arrière : ";
+        cout<< "\n         - Usure :       ";
+        affichageDiagrameStat("c", usurePneusArriere);
+        cout<< "\n         - Pression :    ";
+        affichageDiagrameStat("pp", pressionPneusArriere);
+        cout<< "\n    Temperature moteur : ";
+        affichageDiagrameStat("temp", temperatureMoteur);
+        cout<< "\n    Freins :             ";
+        affichageDiagrameStat("c", usureFreins);
     }
 
     void affichageParamCourse(){
-        cout<< "Pour rappel : " <<endl;
-        cout<< "    - Vitesse en ligne droite : " << vitesseDroit << "km/h" <<endl;
-        cout<< "    - Vitesse dans les virages : " << vitesseVirage << "km/h" <<endl;
+        cout << colors.blue << "*** Paramètres de course actuels de " << nomVoiture << " ***" << colors.close <<endl;
+        cout<< "    - Vitesse en ligne droite : " << vitesseDroit << " km/h" <<endl;
+        cout<< "    - Vitesse dans les virages : " << vitesseVirage << " km/h" <<endl;
         cout<< "    - Direction : " << dureteDirection << "%" <<endl;
     }
 };
@@ -397,13 +395,13 @@ int main() {
 
     // CREATION DES VOITURES
     cout<< colors.yellow << "== CREATION DES VOITURES ==" << colors.close <<endl;
-    cout<< colors.blue << "*** PREMIERE VOITURE ***" << colors.close <<endl;
+    cout<< colors.blue << "*** Première voiture ***" << colors.close <<endl;
     cout<< "Choisissez le nom de la voiture : " <<endl;
     cin>> nom_voiture_1;
     while (not check("boite_vitesse",nombre_vitesses_1)) {cin>> nombre_vitesses_1;}
     while (not check("type_voiture",type_1)){cin>> type_1;}
 
-    cout<< colors.blue << "*** DEUXIEME VOITURE ***" << colors.close <<endl;
+    cout<< colors.blue << "*** Deuxième voiture ***" << colors.close <<endl;
     cout<< "Choisissez le nom de la voiture : " <<endl;
     cin>> nom_voiture_2;
     while (not check("boite_vitesse",nombre_vitesses_2)) {cin>> nombre_vitesses_2;}
@@ -419,7 +417,7 @@ int main() {
     // DEBUT DES TOURS
     for (int i = 1; i <= 10 ; i++) {
         // Affichage du numéro du tour et de la progression dans la course (but => 50 tours)
-        cout<< colors.cyan << "\n == TOUR "<< i << " ==" << colors.close <<endl;
+        cout<< colors.yellow << "\n == TOUR "<< i << " ==" << colors.close <<endl;
         affichageProgression(i);
 
         // SI C'EST LE PREMIER TOUR : Saisie des paramètres de course des voiture
@@ -457,7 +455,9 @@ int main() {
                     voiture2.changementParamCourse();
                 }
             };
-        }
+        };
+
+        consoleClear();
 
         // Changement des différents éléments de la voiture suite au tour
         if (voiture1.alive){
