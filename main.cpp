@@ -487,7 +487,7 @@ int main() {
 
     // Pour les ajustements
     string ajustement;
-    int ajustementAFaire;
+    int ajustementAFaire = 0;
 
     // Pour le jeu
     int nombreTours = 50;
@@ -600,6 +600,8 @@ int main() {
             else if(ajustementAFaire == 2) {consoleClear();
                 voiture2.afficheTexteStat(); voiture2.ajustement();}
             else {continue;};
+
+            ajustementAFaire = 0;
         }
         else{
             consoleClear();
