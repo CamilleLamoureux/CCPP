@@ -294,6 +294,16 @@ public:
         if (usureFreins < 0) {usureFreins = 0;};
         if (niveauEssence < 0) {niveauEssence = 0;};
         if (temperatureMoteur < 0) {temperatureMoteur = 0;};
+
+        // Mise à 100 des valeurs supérieures à 100 pour ne pas avoir d'erreur d'affichage
+        if (temperatureMoteur > 100) {temperatureMoteur = 100;};
+        if (pressionPneusArriere > 100) {pressionPneusArriere = 100;};
+        if (pressionPneusAvant > 100) {pressionPneusAvant = 100;};
+        if (usurePneusAvant > 100) {usurePneusAvant = 100;};
+        if (usurePneusArriere > 100) {usurePneusArriere = 100;};
+        if (usureFreins > 100) {usureFreins = 100;};
+        if (niveauEssence > 100) {niveauEssence = 100;};
+        if (temperatureMoteur > 100) {temperatureMoteur = 100;};
     }
 
     void ajustement(){
