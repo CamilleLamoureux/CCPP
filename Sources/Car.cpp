@@ -21,12 +21,6 @@ void Car::creationVoiture(string nom, int boiteVitesse, int type) {
 }
 
 void Car::update() {
-    // Variables
-    float poidsTotal = poidsVoiture + 0.755*(niveauEssence*120)/100; // poids de la voiture + niveau d'niveauEssence * poids de l'niveauEssence (0.755kg/L)
-    int freinage = vitesseDroit - vitesseVirage;
-
-    // Essence
-    niveauEssence -= ((( Circuit::tailleTour + poidsTotal * 0.01)*45/100)*100)/120; // consomation d'niveauEssence de 45L/100km, avec une légère influence du poids de la voiture, ramenée sur 100
 
     // Pneus
     if (traction) {
@@ -38,7 +32,7 @@ void Car::update() {
             if (vitesseVirage > 300){
                 accident = true;
             }
-            else if (vitesseVirage > 250 && dureteDirection > 80){
+            else if (vitesseVirage > 220 && dureteDirection > 80){
                 accident = true;
             }
         }
@@ -136,6 +130,43 @@ void Car::update() {
         temperatureMoteur += 10;
     };
 
+    //
+    if (nombreVitesses == 1 && (vitesseDroit > 50 || vitesseVirage > 50)){ accident = true;}
+
+    // Si la vitesse et le rapport sont biens paramétrés
+    if ((nombreVitesses == 1 && (vitesseVirage < 10 || vitesseDroit < 10)) ||
+        (nombreVitesses == 2 && ((vitesseDroit >= 10 || vitesseVirage >= 10) && (vitesseVirage < 70|| vitesseDroit < 70))) ||
+        (nombreVitesses == 3 && ((vitesseDroit >= 70 || vitesseVirage >= 70) && (vitesseVirage < 100|| vitesseDroit < 100))) ||
+        (nombreVitesses == 4 && ((vitesseDroit >= 100 || vitesseVirage >= 100) && (vitesseVirage < 190|| vitesseDroit < 190))) ||
+        (nombreVitesses == 5 && ((vitesseDroit >= 190 || vitesseVirage >= 190) && (vitesseVirage < 240|| vitesseDroit < 240))) ||
+        (nombreVitesses == 6 && ((vitesseDroit >= 240 || vitesseVirage >= 240) && (vitesseVirage <= 323 || vitesseDroit <= 323)))
+        ){indiceConso = 0.5;}
+
+    else if (nombreVitesses == 1){
+        if (vitesseVirage > 15 || vitesseDroit > 15) {indiceConso = 1.05;}
+        else if(vitesseVirage > 25 || vitesseDroit > 25) {accident = true;}
+    }
+    else if (nombreVitesses == 2){
+        if (vitesseDroit > 80 || vitesseVirage > 80) {indiceConso = 1.05;}
+        else if(vitesseVirage > 90 || vitesseDroit > 90) {accident = true;}
+    }
+    else if (nombreVitesses == 3) {!
+        if (vitesseVirage > 110 || vitesseDroit > 110) {indiceConso = 1.05;}
+        else if (vitesseVirage > 120 || vitesseDroit > 120) {accident = true;}
+    }
+    else if (nombreVitesses == 4) {
+        if (vitesseDroit > 190 || vitesseVirage > 190) {indiceConso = 1.05;}
+        else if(vitesseVirage > 200 || vitesseDroit > 200) {accident = true;}
+    }
+    else if (nombreVitesses == 5) {
+        if (vitesseVirage > 240 || vitesseDroit > 240) {indiceConso = 1.05;}
+        else if (vitesseVirage > 250 || vitesseDroit > 250) {accident = true;}
+    }
+
+    // Essence
+    niveauEssence -= ((( Circuit::tailleTour + poidsTotal * 0.01)*45*indiceConso/100)*100)/120; // consomation d'niveauEssence de 45L/100km, avec une légère influence du poids de la voiture, ramenée sur 100
+
+
     // Mise à 0 des valeurs négatives pour ne pas avoir d'erreur d'affichage
     if (temperatureMoteur < 0) {temperatureMoteur = 0;};
     if (pressionPneusArriere < 0) {pressionPneusArriere = 0;};
@@ -155,6 +186,9 @@ void Car::update() {
     if (usureFreins > 100) {usureFreins = 100;};
     if (niveauEssence > 100) {niveauEssence = 100;};
     if (temperatureMoteur > 100) {temperatureMoteur = 100;};
+
+    verifications();
+
 }
 
 void Car::ajustement(){
@@ -283,7 +317,7 @@ void Car::verifications(){
         alive = false;};
 
     // Si les pneus sont trop usés
-    if (usurePneusAvant >= 100 && usurePneusArriere >= 100) {
+    if (usurePneusAvant >= 100 || usurePneusArriere >= 100) {
         cout << Display::red
              << "Les pneus de " << nomVoiture << " sont tous trop usés ! Elle quitte la course..."
              << Display::close << endl;
@@ -317,4 +351,3 @@ void Car::affichageParamCourse(){
     cout<< "    - Vitesse dans les virages : " << vitesseVirage << " km/h" <<endl;
     cout<< "    - Direction : " << dureteDirection << "%" <<endl;
 }
-

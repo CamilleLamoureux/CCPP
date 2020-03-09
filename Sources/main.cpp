@@ -7,8 +7,6 @@
 using namespace std;
 
 int main() {
-    // VARIABLES
-
     // Pour la creation des voitures
     string nomVoiture1;
     string nomVoiture2;
@@ -60,6 +58,7 @@ int main() {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     for (int i = 1; i <= 50 ; i++) {
+        cout << voiture1.alive << voiture2.alive <<endl;
         // Affichage du numéro du tour et de la progression dans la course (but => 50 tours)
         cout << Display::yellow << "\n == TOUR " << i << " ==" << Display::close << endl;
         Display::affichageProgression(i);
@@ -105,12 +104,12 @@ int main() {
 
         // Changement des différents éléments de la voiture suite au tour
         if (voiture1.alive){
+            cout << "Change Voiture 1" <<endl;
             voiture1.update();
-            voiture1.verifications();
         }
         if (voiture2.alive){
+            cout << "Change Voiture 2" <<endl;
             voiture2.update();
-            voiture2.verifications();
         }
 
         // Vérification qu'on a pas perdu les deux voitures
@@ -142,7 +141,6 @@ int main() {
         else{
             Display::consoleClear();
         }
-
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

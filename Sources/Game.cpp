@@ -1,7 +1,3 @@
-//
-// Created by c on 3/2/20.
-//
-
 #include "../Headers/Game.h"
 
 bool Game::check(string type, int value){
@@ -36,6 +32,6 @@ void Game::finDuJeu(bool alive1, bool alive2, int nombreTours){
 
     if(alive1 && alive2 && nombreTours >= 50) {cout << Display::green << "Votre victoire est totale ! Vous avez réussit à maintenair vos deux voitures pendant 50 tours !" << Display::close << endl;}
     else if((alive1 || alive2) && nombreTours >= 50) {cout << Display::yellow << "Votre victoire est partielle ! Vous avez réussit à maintenair vos une voiture sur les deux pendant 50 tours !" << Display::close << endl;}
-    else if((alive1 && not alive2) && nombreTours >= 50) {cout << Display::red << "Vous avez perdu... Vous avez tenu " << nombreTours << " tours ! Vous pouvez toujours retenter votre chance !" << Display::close << endl;}
-    else { cout<< "Unexpected end of game" <<endl;};
+    else if((not alive1 && not alive2) && nombreTours >= 50) {cout << Display::red << "Vous avez perdu... Vous avez tenu " << nombreTours << " tours ! Vous pouvez toujours retenter votre chance !" << Display::close << endl;}
+    else {cout<< "Unexpected end of game" <<endl;};
 };
