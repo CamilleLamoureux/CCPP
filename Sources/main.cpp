@@ -67,7 +67,7 @@ int main() {
         if (i == 1) {
             voiture1.changementParamCourse();
             voiture2.changementParamCourse();
-        };
+        }
 
         // SI C'EST PAS LE PREMIER TOUR : Affichage et potentiel changement des paramètres de course des voitures
         if (i > 1) {
@@ -83,7 +83,7 @@ int main() {
                 if (paramConduiteV1 == "O" || paramConduiteV1 == "o" || paramConduiteV1 == "0") {
                     voiture1.changementParamCourse();
                 }
-            };
+            }
 
             if (voiture2.alive) {
                 voiture2.affichageParamCourse();
@@ -97,8 +97,8 @@ int main() {
                 if (paramConduiteV2 == "O" || paramConduiteV2 == "o" || paramConduiteV2 == "0") {
                     voiture2.changementParamCourse();
                 }
-            };
-        };
+            }
+        }
 
         Display::consoleClear();
 
@@ -106,18 +106,20 @@ int main() {
         if (voiture1.alive){
             cout << "Change Voiture 1" <<endl;
             voiture1.update();
+            voiture1.verifications();
         }
         if (voiture2.alive){
             cout << "Change Voiture 2" <<endl;
             voiture2.update();
+            voiture2.verifications();
         }
 
         // Vérification qu'on a pas perdu les deux voitures
         if( not voiture1.alive && not voiture2.alive) {nombreTours = i; break;}
 
         // Affichage des stats
-        if (voiture1.alive) {voiture1.afficheTexteStat();};
-        if (voiture2.alive) {voiture2.afficheTexteStat();};
+        if (voiture1.alive) {voiture1.afficheTexteStat();}
+        if (voiture2.alive) {voiture2.afficheTexteStat();}
 
         // Ajustements par l'utilisateur
         cout << Display::magenta << "Souhaitez-vous effectuer un ajustement sur une voiture ? [O/N]" << Display::close << endl;
@@ -125,16 +127,16 @@ int main() {
 
         if(ajustement == "O" || ajustement == "o" || ajustement == "0"){
             cout << Display::red << "ATTENTION : Vous ne pouvez effectuer qu'une action par tour, et sur une seule voiture ! Choisissez sagement ;-)" << Display::close << endl;
-            if(voiture1.alive){ cout<< "1. " << voiture1.nomVoiture <<endl;};
-            if(voiture2.alive){ cout<< "2. " << voiture2.nomVoiture <<endl;};
+            if(voiture1.alive){ cout<< "1. " << voiture1.nomVoiture <<endl;}
+            if(voiture2.alive){ cout<< "2. " << voiture2.nomVoiture <<endl;}
             cout<< "3. Exit" <<endl;
-            while (not Game::check("one_or_two", ajustementAFaire)) {cin >> ajustementAFaire;};
+            while (not Game::check("one_or_two", ajustementAFaire)) {cin >> ajustementAFaire;}
 
             if(ajustementAFaire == 1) {Display::consoleClear();
                 voiture1.afficheTexteStat(); voiture1.ajustement();}
             else if(ajustementAFaire == 2) {Display::consoleClear();
                 voiture2.afficheTexteStat(); voiture2.ajustement();}
-            else {continue;};
+            else {continue;}
 
             ajustementAFaire = 0;
         }

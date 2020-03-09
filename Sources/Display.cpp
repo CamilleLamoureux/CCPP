@@ -48,10 +48,10 @@ void Display::affichageDiagrameStat(string type, int n) {
 
     cout << color1 << string(n, ' ') << color2;
     cout << backWhite << string(100 - n, ' ') << close << "   " << n << "%" << endl;
-};
+}
 
 void Display::affichageProgression(int n){
     
     cout << backGreen << string(n, ' ') << Display::close;
     cout << backWhite << string(50 - n, ' ') << Display::close << endl;
-};
+}

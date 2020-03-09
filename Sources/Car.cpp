@@ -22,7 +22,9 @@ void Car::creationVoiture(string nom, int boiteVitesse, int type) {
 
 void Car::update() {
 
-    // Pneus
+    // Pneus & vitesse
+
+    // TRACTION
     if (traction) {
         usurePneusArriere += 5;
         if (pressionPneusAvant < 20){ // pas assez gonflé
@@ -32,14 +34,18 @@ void Car::update() {
             if (vitesseVirage > 300){
                 accident = true;
             }
-            else if (vitesseVirage > 220 && dureteDirection > 80){
+            else if (vitesseVirage > 220){
                 accident = true;
             }
         }
         else {
             usurePneusAvant += 10;
-        };
+        }
+
+        if (vitesseVirage >= 200) {accident = true;}
     }
+
+    // PROPULSION
     else if (propulsion){
         usurePneusAvant += 5;
         if (pressionPneusArriere < 20){ // pas assez gonflé
@@ -49,14 +55,18 @@ void Car::update() {
             if (vitesseVirage > 300){
                 accident = true;
             }
-            else if (vitesseVirage > 250 && dureteDirection > 80){
+            else if (vitesseVirage > 250){
                 accident = true;
             }
         }
         else {
             usurePneusArriere += 10;
-        };
+        }
+        
+        if (vitesseVirage >= 250) {accident = true;}
     }
+
+    // 4X4
     else if (quatreRouesMotrices) {
         if (pressionPneusArriere < 20 ){ // pas assez gonflé
             usurePneusArriere += 15;
@@ -65,13 +75,14 @@ void Car::update() {
             if (vitesseVirage > 300){
                 accident = true;
             }
-            else if (vitesseVirage > 250 && dureteDirection > 80){
+            else if (vitesseVirage > 250){
                 accident = true;
             }
         }
         else {
             usurePneusArriere += 7;
-        };
+        }
+        
         if (pressionPneusAvant < 20){ // pas assez gonflé
             usurePneusAvant += 15;
         }
@@ -79,13 +90,15 @@ void Car::update() {
             if (vitesseVirage > 300){
                 accident = true;
             }
-            else if (vitesseVirage > 250 && dureteDirection > 80){
+            else if (vitesseVirage > 250){
                 accident = true;
             }
         }
         else {
             usurePneusAvant += 7;
-        };
+        }
+
+        if (vitesseVirage >= 250) {accident = true;}
     }
 
     pressionPneusArriere -= 2;
@@ -100,18 +113,8 @@ void Car::update() {
     }
     else if (freinage > 100) {
         usureFreins += 10;
-    };
-
-    // Direction
-    if (dureteDirection > 95){accident = true;}; // si la direction est trop dure
-    if (dureteDirection < 20){accident = true;}; // si la direction est trop rapide
-
-    // Vitesse
-    if (vitesseVirage >= 250){accident = true;}; // si on roule trop vite dans un virage
-    if (vitesseDroit > 300) {
-        if (dureteDirection > 80) {accident = true;} // si on roule trop vite avec une direction trop dure
-        else if (dureteDirection < 30) {accident = true;} // si on roule trop vite avec une direction trop rapide
     }
+
 
     // Moteur
     if (temperatureMoteur > 60) {
@@ -128,7 +131,7 @@ void Car::update() {
     }
     else if (temperatureMoteur <= 20){
         temperatureMoteur += 10;
-    };
+    }
 
     //
     if (nombreVitesses == 1 && (vitesseDroit > 50 || vitesseVirage > 50)){ accident = true;}
@@ -150,7 +153,7 @@ void Car::update() {
         if (vitesseDroit > 80 || vitesseVirage > 80) {indiceConso = 1.05;}
         else if(vitesseVirage > 90 || vitesseDroit > 90) {accident = true;}
     }
-    else if (nombreVitesses == 3) {!
+    else if (nombreVitesses == 3) {
         if (vitesseVirage > 110 || vitesseDroit > 110) {indiceConso = 1.05;}
         else if (vitesseVirage > 120 || vitesseDroit > 120) {accident = true;}
     }
@@ -168,27 +171,24 @@ void Car::update() {
 
 
     // Mise à 0 des valeurs négatives pour ne pas avoir d'erreur d'affichage
-    if (temperatureMoteur < 0) {temperatureMoteur = 0;};
-    if (pressionPneusArriere < 0) {pressionPneusArriere = 0;};
-    if (pressionPneusAvant < 0) {pressionPneusAvant = 0;};
-    if (usurePneusAvant < 0) {usurePneusAvant = 0;};
-    if (usurePneusArriere < 0) {usurePneusArriere = 0;};
-    if (usureFreins < 0) {usureFreins = 0;};
-    if (niveauEssence < 0) {niveauEssence = 0;};
-    if (temperatureMoteur < 0) {temperatureMoteur = 0;};
+    if (temperatureMoteur < 0) {temperatureMoteur = 0;}
+    if (pressionPneusArriere < 0) {pressionPneusArriere = 0;}
+    if (pressionPneusAvant < 0) {pressionPneusAvant = 0;}
+    if (usurePneusAvant < 0) {usurePneusAvant = 0;}
+    if (usurePneusArriere < 0) {usurePneusArriere = 0;}
+    if (usureFreins < 0) {usureFreins = 0;}
+    if (niveauEssence < 0) {niveauEssence = 0;}
+    if (temperatureMoteur < 0) {temperatureMoteur = 0;}
 
     // Mise à 100 des valeurs supérieures à 100 pour ne pas avoir d'erreur d'affichage
-    if (temperatureMoteur > 100) {temperatureMoteur = 100;};
-    if (pressionPneusArriere > 100) {pressionPneusArriere = 100;};
-    if (pressionPneusAvant > 100) {pressionPneusAvant = 100;};
-    if (usurePneusAvant > 100) {usurePneusAvant = 100;};
-    if (usurePneusArriere > 100) {usurePneusArriere = 100;};
-    if (usureFreins > 100) {usureFreins = 100;};
-    if (niveauEssence > 100) {niveauEssence = 100;};
-    if (temperatureMoteur > 100) {temperatureMoteur = 100;};
-
-    verifications();
-
+    if (temperatureMoteur > 100) {temperatureMoteur = 100;}
+    if (pressionPneusArriere > 100) {pressionPneusArriere = 100;}
+    if (pressionPneusAvant > 100) {pressionPneusAvant = 100;}
+    if (usurePneusAvant > 100) {usurePneusAvant = 100;}
+    if (usurePneusArriere > 100) {usurePneusArriere = 100;}
+    if (usureFreins > 100) {usureFreins = 100;}
+    if (niveauEssence > 100) {niveauEssence = 100;}
+    if (temperatureMoteur > 100) {temperatureMoteur = 100;}
 }
 
 void Car::ajustement(){
@@ -239,20 +239,18 @@ void Car::ajustement(){
             cout << Display::green << "Vos pneus arrières sont neufs !";
             break;
     }
-};
+}
 
 void Car::changementParamCourse(){
     // Remise à 0 des valeurs qu'on va changer
     vitesseVirage = 0;
     vitesseDroit = 0;
-    dureteDirection = 0;
 
     // Changement des valeurs
     cout << Display::blue << "*** PARAMETRES DE COURSE DE " << nomVoiture << " ***" << Display::close << endl;
     while (not Game::check("vitesse_droit",vitesseDroit)) {cin>> vitesseDroit;}
     while (not Game::check("vitesse_virage",vitesseVirage)) {cin>> vitesseVirage;}
-    while (not Game::check("direction",dureteDirection)) {cin>> dureteDirection;}
-};
+}
 
 void Car::verifications(){
     // Si on a eut un accident
@@ -261,28 +259,28 @@ void Car::verifications(){
              << "La voiture " << nomVoiture
              << " a eut un accident ! Elle quitte la course..."
              << Display::close << endl;
-        alive = false;};
+        alive = false;}
 
     // Si il n'y a plus d'essence
     if (niveauEssence <= 0) {
         cout << Display::red
              << "C'est la panne sèche pour " << nomVoiture << " ! Elle quitte la course..."
              << Display::close << endl;
-        alive = false;};
+        alive = false;}
 
     // Si le moteur est trop chaud
     if (temperatureMoteur >= 100) {
         cout << Display::red
              << "Surchauffe du moteur pour " << nomVoiture << " ! Elle quitte la course..."
              << Display::close << endl;
-        alive = false;};
+        alive = false;}
 
     // Si les freins sont trop usés
     if (usureFreins >= 100) {
         cout << Display::red
              << "Les freins de " << nomVoiture << "  sont HS ! Elle quitte la course..."
              << Display::close << endl;
-        alive = false;};
+        alive = false;}
 
     // Si les pneus sont à plat
     if (pressionPneusAvant <= 0 || pressionPneusArriere <= 0) {
@@ -290,7 +288,7 @@ void Car::verifications(){
              << "Les pneus de " << nomVoiture << "sont à plat ! Elle quitte la course..."
              << Display::close << endl;
         alive = false;
-    };
+    }
 
     // Si les pneus arrières sont trop sous gonflés sur une propulsion
     if (pressionPneusArriere <= 10 && propulsion) {
@@ -298,7 +296,7 @@ void Car::verifications(){
              << "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus arrière sont sous-gonflés ! "
                                                    "C'est une propulsion ! Elle quitte la course..."
              << Display::close << endl;
-        alive = false;};
+        alive = false;}
 
     // Si les pneus avants sont trop sous glonflés sur un traction
     if (pressionPneusAvant <= 10 && traction) {
@@ -306,7 +304,7 @@ void Car::verifications(){
              << "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus avant sont sous-gonflés ! "
                                                    "C'est une traction ! Elle quitte la course..."
              << Display::close << endl;
-        alive = false;};
+        alive = false;}
 
     // Si tous les pneus sont sous gonflés sur un 4x4
     if (pressionPneusAvant <= 10 && pressionPneusArriere <= 10) {
@@ -314,15 +312,15 @@ void Car::verifications(){
              << "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus sont sous-gonflés! "
                                                    "Elle quitte la course..."
              << Display::close << endl;
-        alive = false;};
+        alive = false;}
 
     // Si les pneus sont trop usés
     if (usurePneusAvant >= 100 || usurePneusArriere >= 100) {
         cout << Display::red
              << "Les pneus de " << nomVoiture << " sont tous trop usés ! Elle quitte la course..."
              << Display::close << endl;
-        alive = false;};
-};
+        alive = false;}
+}
 
 void Car::afficheTexteStat(){
     cout << Display::blue << "\n *** Statistiques de " << nomVoiture << " : ***" << Display::close << endl;
@@ -349,5 +347,4 @@ void Car::affichageParamCourse(){
     cout << Display::blue << "*** Paramètres de course actuels de " << nomVoiture << " ***" << Display::close << endl;
     cout<< "    - Vitesse en ligne droite : " << vitesseDroit << " km/h" <<endl;
     cout<< "    - Vitesse dans les virages : " << vitesseVirage << " km/h" <<endl;
-    cout<< "    - Direction : " << dureteDirection << "%" <<endl;
 }

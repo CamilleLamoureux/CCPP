@@ -25,6 +25,7 @@ public:
     int nombreVitesses;
     bool alive = true;
     bool accident = false;
+
     int vitesseDroit = 0; // en km/h
     int vitesseVirage = 0; // en km/h
     int temperatureMoteur = 50; // en %
@@ -34,7 +35,6 @@ public:
     int usurePneusAvant = 5; // en %
     int usurePneusArriere = 5; // en %
     int usureFreins = 5; // en %
-    int dureteDirection = 0; // en %
 
     float poidsTotal = poidsVoiture + 0.755*(niveauEssence*120)/100; // poids de la voiture + niveau d'niveauEssence * poids de l'niveauEssence (0.755kg/L)
     int freinage = vitesseDroit - vitesseVirage;
