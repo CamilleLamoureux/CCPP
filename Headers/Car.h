@@ -1,7 +1,3 @@
-//
-// Created by c on 3/2/20.
-//
-
 #ifndef FINAL_PROJECT_CAR_H
 #define FINAL_PROJECT_CAR_H
 

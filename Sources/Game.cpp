@@ -20,9 +20,7 @@ bool Game::check(string type, int value){
     else if (type == "one_or_two") {
         if (value > 0 && value <=3) {return true;} else {cout<< "Sur quelle voiture ?" <<endl; return false; }
     }
-//    else if (type == "yes_or_no") {
-//        if (to_string(value) == "O" || to_string(value) == "o" || to_string(value) == "0" || to_string(value) == "N") { return true;} else {cout<< "O/N" <<endl; return false;}
-//    }
+
     return false;
 }
 
@@ -30,8 +28,7 @@ void Game::finDuJeu(bool alive1, bool alive2, int nombreTours){
 
     Display::consoleClear();
 
-    if(alive1 && alive2 && nombreTours >= 50) {cout << Display::green << "Votre victoire est totale ! Vous avez réussit à maintenair vos deux voitures pendant 50 tours !" << Display::close << endl;}
-    else if((alive1 || alive2) && nombreTours >= 50) {cout << Display::yellow << "Votre victoire est partielle ! Vous avez réussit à maintenair vos une voiture sur les deux pendant 50 tours !" << Display::close << endl;}
+    if(alive1 && alive2 && nombreTours >= butNombreTours) {cout << Display::green << "Votre victoire est totale ! Vous avez réussit à maintenair vos deux voitures pendant " << butNombreTours <<" tours !" << Display::close << endl;}
+    else if((alive1 || alive2) && nombreTours >= 50) {cout << Display::green << "Votre victoire est partielle ! Vous avez réussit à maintenir vos une voiture sur les deux pendant " << butNombreTours <<" tours !" << Display::close << endl;}
     else if((not alive1 && not alive2) && nombreTours >= 50) {cout << Display::red << "Vous avez perdu... Vous avez tenu " << nombreTours << " tours ! Vous pouvez toujours retenter votre chance !" << Display::close << endl;}
-    else {cout<< "Unexpected end of game" <<endl;}
 }

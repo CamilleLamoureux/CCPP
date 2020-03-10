@@ -24,14 +24,23 @@ int main() {
     int ajustementAFaire = 0;
 
     // Pour le jeu
-    int nombreTours = 50;
+    int butNombreTours;
+    int nombreTours;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // CHOIX DES PARAMETRES DE JEU
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    cout<< Display::red << "== BUT ==" << Display::close << endl;
+    cout<< "Combien de tours souhaitez-vous faire pour gagner ?" <<endl;
+    cin>> butNombreTours;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // CREATION DES VOITURES
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Saisie des variables par l'utilisateur
-    cout << Display::yellow << "== CREATION DES VOITURES ==" << Display::close << endl;
+    cout << Display::red << "== CREATION DES VOITURES ==" << Display::close << endl;
     cout << Display::blue << "*** Première voiture ***" << Display::close << endl;
     cout<< "Choisissez le nom de la voiture : " <<endl;
     cin >> nomVoiture1;
@@ -57,10 +66,9 @@ int main() {
     // DEBUT DES TOURS
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    for (int i = 1; i <= 50 ; i++) {
-        cout << voiture1.alive << voiture2.alive <<endl;
+    for (int i = 1; i <= butNombreTours ; i++) {
         // Affichage du numéro du tour et de la progression dans la course (but => 50 tours)
-        cout << Display::yellow << "\n == TOUR " << i << " ==" << Display::close << endl;
+        cout << Display::red << "\n == TOUR " << i << " ==" << Display::close << endl;
         Display::affichageProgression(i);
 
         // SI C'EST LE PREMIER TOUR : Saisie des paramètres de course des voiture
@@ -104,12 +112,10 @@ int main() {
 
         // Changement des différents éléments de la voiture suite au tour
         if (voiture1.alive){
-            cout << "Change Voiture 1" <<endl;
             voiture1.update();
             voiture1.verifications();
         }
         if (voiture2.alive){
-            cout << "Change Voiture 2" <<endl;
             voiture2.update();
             voiture2.verifications();
         }
@@ -149,7 +155,7 @@ int main() {
     // FIN DU JEU
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    cout << Display::yellow << "== END OF GAME ==" << Display::close << endl;
+    cout << Display::red << "== END OF GAME ==" << Display::close << endl;
     Game::finDuJeu(voiture1.alive, voiture2.alive, nombreTours);
 
     return 0;

@@ -134,7 +134,7 @@ void Car::update() {
     }
 
     //
-    if (nombreVitesses == 1 && (vitesseDroit > 50 || vitesseVirage > 50)){ accident = true;}
+    if (vitesseDroit > 50 ? nombreVitesses == 1 : nombreVitesses == 1 && vitesseVirage > 50) { accident = true; }
 
     // Si la vitesse et le rapport sont biens paramétrés
     if ((nombreVitesses == 1 && (vitesseVirage < 10 || vitesseDroit < 10)) ||
@@ -146,28 +146,28 @@ void Car::update() {
         ){indiceConso = 0.5;}
 
     else if (nombreVitesses == 1){
-        if (vitesseVirage > 15 || vitesseDroit > 15) {indiceConso = 1.05;}
+        if (vitesseVirage > 15 || vitesseDroit > 15) {indiceConso = 1;}
         else if(vitesseVirage > 25 || vitesseDroit > 25) {accident = true;}
     }
     else if (nombreVitesses == 2){
-        if (vitesseDroit > 80 || vitesseVirage > 80) {indiceConso = 1.05;}
+        if (vitesseDroit > 80 || vitesseVirage > 80) {indiceConso = 1;}
         else if(vitesseVirage > 90 || vitesseDroit > 90) {accident = true;}
     }
     else if (nombreVitesses == 3) {
-        if (vitesseVirage > 110 || vitesseDroit > 110) {indiceConso = 1.05;}
+        if (vitesseVirage > 110 || vitesseDroit > 110) {indiceConso = 1;}
         else if (vitesseVirage > 120 || vitesseDroit > 120) {accident = true;}
     }
     else if (nombreVitesses == 4) {
-        if (vitesseDroit > 190 || vitesseVirage > 190) {indiceConso = 1.05;}
+        if (vitesseDroit > 190 || vitesseVirage > 190) {indiceConso = 1;}
         else if(vitesseVirage > 200 || vitesseDroit > 200) {accident = true;}
     }
     else if (nombreVitesses == 5) {
-        if (vitesseVirage > 240 || vitesseDroit > 240) {indiceConso = 1.05;}
+        if (vitesseVirage > 240 || vitesseDroit > 240) {indiceConso = 1;}
         else if (vitesseVirage > 250 || vitesseDroit > 250) {accident = true;}
     }
 
     // Essence
-    niveauEssence -= ((( Circuit::tailleTour + poidsTotal * 0.01)*45*indiceConso/100)*100)/120; // consomation d'niveauEssence de 45L/100km, avec une légère influence du poids de la voiture, ramenée sur 100
+    niveauEssence -= ((( Circuit::tailleTour + poidsTotal * 0.01)*((45*indiceConso)/100))*100)/120; // consomation d'niveauEssence de 45L/100km, avec une légère influence du poids de la voiture, ramenée sur 100
 
 
     // Mise à 0 des valeurs négatives pour ne pas avoir d'erreur d'affichage
