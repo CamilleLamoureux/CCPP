@@ -167,8 +167,13 @@ void Car::update() {
     }
 
     // Essence
-    niveauEssence -= ((( Circuit::tailleTour + poidsTotal * 0.01)*((45*indiceConso)/100))*100)/120; // consomation d'niveauEssence de 45L/100km, avec une légère influence du poids de la voiture, ramenée sur 100
+    float poidsTotal = poidsVoiture + 0.755*(niveauEssence*120)/100; // poids de la voiture + niveau d'niveauEssence * poids de l'niveauEssence (0.755kg/L)
+    float consoEssence = (Circuit::tailleTour*0.45)*indiceConso + poidsTotal*0.01;
+    niveauEssence -= consoEssence;
 
+    cout<< "Indice : " << indiceConso <<endl;
+    cout<< "Poids : " << poidsTotal <<endl;
+    cout<< "Conso :" << consoEssence <<endl;
 
     // Mise à 0 des valeurs négatives pour ne pas avoir d'erreur d'affichage
     if (temperatureMoteur < 0) {temperatureMoteur = 0;}

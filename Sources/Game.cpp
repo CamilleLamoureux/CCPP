@@ -24,11 +24,13 @@ bool Game::check(string type, int value){
     return false;
 }
 
-void Game::finDuJeu(bool alive1, bool alive2, int nombreTours){
+void Game::finDuJeu(bool alive1, bool alive2, int nombreTours, int butNombreTours){
 
     Display::consoleClear();
 
-    if(alive1 && alive2 && nombreTours >= butNombreTours) {cout << Display::green << "Votre victoire est totale ! Vous avez réussit à maintenair vos deux voitures pendant " << butNombreTours <<" tours !" << Display::close << endl;}
-    else if((alive1 || alive2) && nombreTours >= 50) {cout << Display::green << "Votre victoire est partielle ! Vous avez réussit à maintenir vos une voiture sur les deux pendant " << butNombreTours <<" tours !" << Display::close << endl;}
-    else if((not alive1 && not alive2) && nombreTours >= 50) {cout << Display::red << "Vous avez perdu... Vous avez tenu " << nombreTours << " tours ! Vous pouvez toujours retenter votre chance !" << Display::close << endl;}
+    if(nombreTours == butNombreTours){
+        if(alive1 && alive2) {cout << Display::green << "Votre victoire est totale ! Vous avez réussi à maintenir vos deux voitures pendant " << nombreTours <<" tours !" << Display::close << endl;}
+        else if(alive1 || alive2) {cout << Display::green << "Votre victoire est partielle ! Vous avez réussi à maintenir une voiture sur les deux pendant " << nombreTours <<" tours !" << Display::close << endl;}
+    }
+   else if(not alive1 && not alive2) {cout << Display::red << "Vous avez perdu... Vous avez tenu " << nombreTours << " tours ! Vous pouvez toujours retenter votre chance !" << Display::close << endl;}
 }

@@ -11,7 +11,7 @@ using namespace std;
 
 class Car {
 public:
-    int poidsVoiture;
+    int poidsVoiture = 735; // une formule 1 pèse 735kg
 
     string nomVoiture;
     string typeVoiture;
@@ -32,7 +32,6 @@ public:
     int usurePneusArriere = 5; // en %
     int usureFreins = 5; // en %
 
-    float poidsTotal = poidsVoiture + 0.755*(niveauEssence*120)/100; // poids de la voiture + niveau d'niveauEssence * poids de l'niveauEssence (0.755kg/L)
     int freinage = vitesseDroit - vitesseVirage;
     float indiceConso = 1;
 

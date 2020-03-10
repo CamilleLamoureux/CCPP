@@ -149,6 +149,7 @@ int main() {
         else{
             Display::consoleClear();
         }
+        nombreTours = i;
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,7 +157,7 @@ int main() {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     cout << Display::red << "== END OF GAME ==" << Display::close << endl;
-    Game::finDuJeu(voiture1.alive, voiture2.alive, nombreTours);
+    Game::finDuJeu(voiture1.alive, voiture2.alive, nombreTours, butNombreTours);
 
     return 0;
 }

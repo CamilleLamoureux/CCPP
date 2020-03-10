@@ -14,10 +14,8 @@ using namespace std;
 
 class Game {
 public:
-    static const int butNombreTours = 5;
-
     static bool check(string type, int value);
-    static void finDuJeu(bool alive1, bool alive2, int nombreTours);
+    static void finDuJeu(bool alive1, bool alive2, int nombreTours, int butNombreTours);
 };
 
 #endif //FINAL_PROJECT_GAME_H
