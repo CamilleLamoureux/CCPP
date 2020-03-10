@@ -1,6 +1,6 @@
 *Langue : français (France)*
 
-# Jeu de gestion de voiture de course
+# Jeu de gestion de voitures de course
 
 ## Règles 
 
@@ -9,6 +9,8 @@ Vous possédez deux voitures de course. Votre but est de faire en sorte qu'elles
 de piste.
 
 *NB : Vous ne cherchez pas à finir premier.*
+
+**UPDATE**, nouvelle fonctionnalité : vous pouvez choisir le nombre de tours nécessaires pour gagner.
 
 ### Présentation des éléments
 #### La piste
@@ -57,11 +59,11 @@ Vous pouvez perdre une voiture selon deux motifs :
 
 
 ### Fin du jeu
-**Vous gagnez** si vous arrivez à conserver 2 voitures pendant 50 tours.
+**Vous gagnez** si vous arrivez à conserver 2 voitures pendant la totalité des tours.
 
-**Vous perdez** si vos deux voitures sont hors courses avant le 50e tour.
+**Vous perdez** si vos deux voitures sont hors courses avant la fin des tours.
 
-*NB : vous pouvez avoir une "victoire partielle" si vous conservez une voiture sur les deux pendant 50 tours*
+*NB : vous pouvez avoir une "victoire partielle" si vous conservez une voiture sur les deux pendant la totalité des tours.*
 
 
 ## Informations techniques
