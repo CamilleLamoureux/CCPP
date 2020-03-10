@@ -199,7 +199,7 @@ void Car::update() {
 void Car::ajustement(){
     int aChanger;
 
-    cout << Display::yellow << "\n == AJUSTEMENT DE " << nomVoiture << " ==" << Display::close << endl;
+    cout  << "\n == AJUSTEMENT DE " << nomVoiture << " =="  << endl;
     cout<< "0. Exit \n 1. Faire le plein d'essence "
            "\n 2. Faire refroidir le moteur (-50%)"
            "\n 3. Regonfler les pneus avants (+20%)"
@@ -211,37 +211,37 @@ void Car::ajustement(){
 
     Display::consoleClear();
 
-    cout << Display::green << nomVoiture << " : " << Display::close;
+    cout  << nomVoiture << " : " ;
     switch(aChanger){
         case 0 :
             break;
         case 1 :
             niveauEssence = 100;
-            cout << Display::green << "Vous avez fait le plein !" << Display::close << endl;
+            cout  << "Vous avez fait le plein !"  << endl;
             break;
         case 2 :
             temperatureMoteur -= 50;
-            cout << Display::green << "La température du moteur est de " << temperatureMoteur << "%." << Display::close << endl;
+            cout  << "La température du moteur est de " << temperatureMoteur << "%."  << endl;
             break;
         case 3 :
             pressionPneusAvant += 20;
-            cout << Display::green << "La pression de vos pneus avant est maintenant de " << pressionPneusAvant << "%." << Display::close << endl;
+            cout  << "La pression de vos pneus avant est maintenant de " << pressionPneusAvant << "%."  << endl;
             break;
         case 4 :
             pressionPneusArriere += 20;
-            cout << Display::green << "La pression de vos pneus arrière est maintenant de " << pressionPneusArriere << "%." << Display::close << endl;
+            cout  << "La pression de vos pneus arrière est maintenant de " << pressionPneusArriere << "%."  << endl;
             break;
         case 5 :
             usureFreins = 5;
-            cout << Display::green << "Vos freins sont comme neufs !" << Display::close << endl;
+            cout  << "Vos freins sont comme neufs !"  << endl;
             break;
         case 6 :
             usurePneusAvant = 5;
-            cout << Display::green << "Vos pneus avant sont neufs !" << Display::close << endl;
+            cout  << "Vos pneus avant sont neufs !"  << endl;
             break;
         case 7 :
             usurePneusArriere = 5;
-            cout << Display::green << "Vos pneus arrières sont neufs !";
+            cout  << "Vos pneus arrières sont neufs !";
             break;
     }
 }
@@ -252,7 +252,7 @@ void Car::changementParamCourse(){
     vitesseDroit = 0;
 
     // Changement des valeurs
-    cout << Display::blue << "*** PARAMETRES DE COURSE DE " << nomVoiture << " ***" << Display::close << endl;
+    cout  << "*** PARAMETRES DE COURSE DE " << nomVoiture << " ***"  << endl;
     while (not Game::check("vitesse_droit",vitesseDroit)) {cin>> vitesseDroit;}
     while (not Game::check("vitesse_virage",vitesseVirage)) {cin>> vitesseVirage;}
 }
@@ -260,76 +260,76 @@ void Car::changementParamCourse(){
 void Car::verifications(){
     // Si on a eut un accident
     if (accident) {
-        cout << Display::red
+        cout 
              << "La voiture " << nomVoiture
              << " a eut un accident ! Elle quitte la course..."
-             << Display::close << endl;
+              << endl;
         alive = false;}
 
     // Si il n'y a plus d'essence
     if (niveauEssence <= 0) {
-        cout << Display::red
+        cout 
              << "C'est la panne sèche pour " << nomVoiture << " ! Elle quitte la course..."
-             << Display::close << endl;
+              << endl;
         alive = false;}
 
     // Si le moteur est trop chaud
     if (temperatureMoteur >= 100) {
-        cout << Display::red
+        cout 
              << "Surchauffe du moteur pour " << nomVoiture << " ! Elle quitte la course..."
-             << Display::close << endl;
+              << endl;
         alive = false;}
 
     // Si les freins sont trop usés
     if (usureFreins >= 100) {
-        cout << Display::red
+        cout 
              << "Les freins de " << nomVoiture << "  sont HS ! Elle quitte la course..."
-             << Display::close << endl;
+              << endl;
         alive = false;}
 
     // Si les pneus sont à plat
     if (pressionPneusAvant <= 0 || pressionPneusArriere <= 0) {
-        cout << Display::red
+        cout 
              << "Les pneus de " << nomVoiture << "sont à plat ! Elle quitte la course..."
-             << Display::close << endl;
+              << endl;
         alive = false;
     }
 
     // Si les pneus arrières sont trop sous gonflés sur une propulsion
     if (pressionPneusArriere <= 10 && propulsion) {
-        cout << Display::red
+        cout 
              << "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus arrière sont sous-gonflés ! "
                                                    "C'est une propulsion ! Elle quitte la course..."
-             << Display::close << endl;
+              << endl;
         alive = false;}
 
     // Si les pneus avants sont trop sous glonflés sur un traction
     if (pressionPneusAvant <= 10 && traction) {
-        cout << Display::red
+        cout 
              << "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus avant sont sous-gonflés ! "
                                                    "C'est une traction ! Elle quitte la course..."
-             << Display::close << endl;
+              << endl;
         alive = false;}
 
     // Si tous les pneus sont sous gonflés sur un 4x4
     if (pressionPneusAvant <= 10 && pressionPneusArriere <= 10) {
-        cout << Display::red
+        cout 
              << "Compliqué pour " << nomVoiture << " de rouler alors que ses pneus sont sous-gonflés! "
                                                    "Elle quitte la course..."
-             << Display::close << endl;
+              << endl;
         alive = false;}
 
     // Si les pneus sont trop usés
     if (usurePneusAvant >= 100 || usurePneusArriere >= 100) {
-        cout << Display::red
+        cout 
              << "Les pneus de " << nomVoiture << " sont tous trop usés ! Elle quitte la course..."
-             << Display::close << endl;
+              << endl;
         alive = false;}
 }
 
 void Car::afficheTexteStat(){
-    cout << Display::blue << "\n *** Statistiques de " << nomVoiture << " : ***" << Display::close << endl;
-    cout << Display::black << "    Type : " << typeVoiture << Display::close << endl;
+    cout  << "\n *** Statistiques de " << nomVoiture << " : ***"  << endl;
+    cout  << "    Type : " << typeVoiture  << endl;
     cout<< "    Carburant :          ";
     Display::affichageDiagrameStat("d", niveauEssence);
     cout<< "\n    Pneus avant: ";
@@ -349,7 +349,7 @@ void Car::afficheTexteStat(){
 }
 
 void Car::affichageParamCourse(){
-    cout << Display::blue << "*** Paramètres de course actuels de " << nomVoiture << " ***" << Display::close << endl;
+    cout  << "*** Paramètres de course actuels de " << nomVoiture << " ***"  << endl;
     cout<< "    - Vitesse en ligne droite : " << vitesseDroit << " km/h" <<endl;
     cout<< "    - Vitesse dans les virages : " << vitesseVirage << " km/h" <<endl;
 }

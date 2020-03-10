@@ -31,7 +31,7 @@ int main() {
     // CHOIX DES PARAMETRES DE JEU
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    cout<< Display::red << "== BUT ==" << Display::close << endl;
+    cout << "== BUT ==" << endl;
     cout<< "Combien de tours souhaitez-vous faire pour gagner ?" <<endl;
     cin>> butNombreTours;
 
@@ -40,14 +40,14 @@ int main() {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Saisie des variables par l'utilisateur
-    cout << Display::red << "== CREATION DES VOITURES ==" << Display::close << endl;
-    cout << Display::blue << "*** Première voiture ***" << Display::close << endl;
+    cout  << "== CREATION DES VOITURES ==" << endl;
+    cout  << "*** Première voiture ***" << endl;
     cout<< "Choisissez le nom de la voiture : " <<endl;
     cin >> nomVoiture1;
     while (not Game::check("boite_vitesse", nombreVitesses1)) {cin >> nombreVitesses1;}
     while (not Game::check("type_voiture", type1)){cin >> type1;}
 
-    cout << Display::blue << "*** Deuxième voiture ***" << Display::close << endl;
+    cout  << "*** Deuxième voiture ***" << endl;
     cout<< "Choisissez le nom de la voiture : " <<endl;
     cin >> nomVoiture2;
     while (not Game::check("boite_vitesse", nombreVitesses2)) {cin >> nombreVitesses2;}
@@ -68,7 +68,7 @@ int main() {
 
     for (int i = 1; i <= butNombreTours ; i++) {
         // Affichage du numéro du tour et de la progression dans la course (but => 50 tours)
-        cout << Display::red << "\n == TOUR " << i << " ==" << Display::close << endl;
+        cout  << "\n == TOUR " << i << " ==" << endl;
         Display::affichageProgression(i);
 
         // SI C'EST LE PREMIER TOUR : Saisie des paramètres de course des voiture
@@ -81,11 +81,11 @@ int main() {
         if (i > 1) {
             if (voiture1.alive) {
                 voiture1.affichageParamCourse();
-                cout << Display::magenta
+                cout 
                      << "Souhaitez-vous changer les vitesses et/ou la direction par rapport au tour précedent pour "
                      << voiture1.nomVoiture
                      << " ? [O/N]"
-                     << Display::close << endl;
+                     << endl;
                 cin>> paramConduiteV1;
 
                 if (paramConduiteV1 == "O" || paramConduiteV1 == "o" || paramConduiteV1 == "0") {
@@ -95,11 +95,11 @@ int main() {
 
             if (voiture2.alive) {
                 voiture2.affichageParamCourse();
-                cout << Display::magenta
+                cout 
                      << "Souhaitez-vous changer les vitesses et/ou la direction par rapport au tour précedent pour "
                      << voiture2.nomVoiture
                      << " ? [O/N]"
-                     << Display::close << endl;
+                     << endl;
                 cin >> paramConduiteV2;
 
                 if (paramConduiteV2 == "O" || paramConduiteV2 == "o" || paramConduiteV2 == "0") {
@@ -128,11 +128,11 @@ int main() {
         if (voiture2.alive) {voiture2.afficheTexteStat();}
 
         // Ajustements par l'utilisateur
-        cout << Display::magenta << "Souhaitez-vous effectuer un ajustement sur une voiture ? [O/N]" << Display::close << endl;
+        cout  << "Souhaitez-vous effectuer un ajustement sur une voiture ? [O/N]" << endl;
         cin >> ajustement;
 
         if(ajustement == "O" || ajustement == "o" || ajustement == "0"){
-            cout << Display::red << "ATTENTION : Vous ne pouvez effectuer qu'une action par tour, et sur une seule voiture ! Choisissez sagement ;-)" << Display::close << endl;
+            cout  << "ATTENTION : Vous ne pouvez effectuer qu'une action par tour, et sur une seule voiture ! Choisissez sagement ;-)" << endl;
             if(voiture1.alive){ cout<< "1. " << voiture1.nomVoiture <<endl;}
             if(voiture2.alive){ cout<< "2. " << voiture2.nomVoiture <<endl;}
             cout<< "3. Exit" <<endl;
@@ -156,7 +156,7 @@ int main() {
     // FIN DU JEU
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    cout << Display::red << "== END OF GAME ==" << Display::close << endl;
+    cout  << "== END OF GAME ==" << endl;
     Game::finDuJeu(voiture1.alive, voiture2.alive, nombreTours, butNombreTours);
 
     return 0;
