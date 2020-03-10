@@ -11,7 +11,7 @@ using namespace std;
 
 class Car {
 public:
-    int poidsVoiture = 735; // une formule 1 pèse 735kg
+    int poidsVoiture = 735; // une formule 1 pese 735kg
 
     string nomVoiture;
     string typeVoiture;

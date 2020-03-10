@@ -15,7 +15,7 @@ int main() {
     int type1 = 0;
     int type2 = 0;
 
-    // Pour les paramètres de conduite
+    // Pour les parametres de conduite
     string paramConduiteV1 = "nothing yet";
     string paramConduiteV2 = "nothing yet";
 
@@ -41,19 +41,19 @@ int main() {
 
     // Saisie des variables par l'utilisateur
     cout  << "== CREATION DES VOITURES ==" << endl;
-    cout  << "*** Première voiture ***" << endl;
+    cout  << "*** Premiere voiture ***" << endl;
     cout<< "Choisissez le nom de la voiture : " <<endl;
     cin >> nomVoiture1;
     while (not Game::check("boite_vitesse", nombreVitesses1)) {cin >> nombreVitesses1;}
     while (not Game::check("type_voiture", type1)){cin >> type1;}
 
-    cout  << "*** Deuxième voiture ***" << endl;
+    cout  << "*** Deuxieme voiture ***" << endl;
     cout<< "Choisissez le nom de la voiture : " <<endl;
     cin >> nomVoiture2;
     while (not Game::check("boite_vitesse", nombreVitesses2)) {cin >> nombreVitesses2;}
     while (not Game::check("type_voiture", type2)){cin >> type2;}
 
-    // Création des objets
+    // Creation des objets
     Car voiture1, voiture2;
 
     // Configuration des objets avec les variables de l'utilisateur
@@ -67,22 +67,22 @@ int main() {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     for (int i = 1; i <= butNombreTours ; i++) {
-        // Affichage du numéro du tour et de la progression dans la course (but => 50 tours)
+        // Affichage du numero du tour et de la progression dans la course (but => 50 tours)
         cout  << "\n == TOUR " << i << " ==" << endl;
         Display::affichageProgression(i);
 
-        // SI C'EST LE PREMIER TOUR : Saisie des paramètres de course des voiture
+        // SI C'EST LE PREMIER TOUR : Saisie des parametres de course des voiture
         if (i == 1) {
             voiture1.changementParamCourse();
             voiture2.changementParamCourse();
         }
 
-        // SI C'EST PAS LE PREMIER TOUR : Affichage et potentiel changement des paramètres de course des voitures
+        // SI C'EST PAS LE PREMIER TOUR : Affichage et potentiel changement des parametres de course des voitures
         if (i > 1) {
             if (voiture1.alive) {
                 voiture1.affichageParamCourse();
                 cout 
-                     << "Souhaitez-vous changer les vitesses et/ou la direction par rapport au tour précedent pour "
+                     << "Souhaitez-vous changer les vitesses et/ou la direction par rapport au tour precedent pour "
                      << voiture1.nomVoiture
                      << " ? [O/N]"
                      << endl;
@@ -96,7 +96,7 @@ int main() {
             if (voiture2.alive) {
                 voiture2.affichageParamCourse();
                 cout 
-                     << "Souhaitez-vous changer les vitesses et/ou la direction par rapport au tour précedent pour "
+                     << "Souhaitez-vous changer les vitesses et/ou la direction par rapport au tour precedent pour "
                      << voiture2.nomVoiture
                      << " ? [O/N]"
                      << endl;
@@ -110,7 +110,7 @@ int main() {
 
         Display::consoleClear();
 
-        // Changement des différents éléments de la voiture suite au tour
+        // Changement des differents elements de la voiture suite au tour
         if (voiture1.alive){
             voiture1.update();
             voiture1.verifications();
@@ -120,7 +120,7 @@ int main() {
             voiture2.verifications();
         }
 
-        // Vérification qu'on a pas perdu les deux voitures
+        // Verification qu'on a pas perdu les deux voitures
         if( not voiture1.alive && not voiture2.alive) {nombreTours = i; break;}
 
         // Affichage des stats
