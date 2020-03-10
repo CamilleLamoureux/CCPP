@@ -171,10 +171,6 @@ void Car::update() {
     float consoEssence = (Circuit::tailleTour*0.45)*indiceConso + poidsTotal*0.01;
     niveauEssence -= consoEssence;
 
-    cout<< "Indice : " << indiceConso <<endl;
-    cout<< "Poids : " << poidsTotal <<endl;
-    cout<< "Conso :" << consoEssence <<endl;
-
     // Mise à 0 des valeurs négatives pour ne pas avoir d'erreur d'affichage
     if (temperatureMoteur < 0) {temperatureMoteur = 0;}
     if (pressionPneusArriere < 0) {pressionPneusArriere = 0;}
