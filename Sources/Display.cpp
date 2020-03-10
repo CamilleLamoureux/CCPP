@@ -6,12 +6,12 @@ void Display::consoleClear() {
 
 void Display::affichageDiagrameStat(string type, int n) {
 
-    cout<< string(n, '-');
-    cout<< string(100 - n, '_') << "   " << n << "%" << endl;
+    cout<< string(n, '|');
+    cout<< string(100 - n, '-') << "   " << n << "%" << endl;
 }
 
 void Display::affichageProgression(int n){
     
-    cout << string(n, '-');
-    cout << string(50 - n, '_') <<endl;
+    cout << string(n, '|');
+    cout << string(50 - n, '-') <<endl;
 }

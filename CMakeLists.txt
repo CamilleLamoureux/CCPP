@@ -15,4 +15,6 @@ set(PROJECT_SOURCES
         Sources/Car.cpp
         Sources/Game.cpp Sources/Circuit.cpp)
 
+set(CMAKE_EXE_LINKER_FLAGS "-static")
+
 add_executable(final_project ${PROJECT_SOURCES} ${PROJECT_HEADERS})
